@@ -3,66 +3,66 @@
 
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style: none;
-    scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  scroll-behavior: smooth;
 
 }
 
 .heading_form_name {
-    color: rgb(78, 189, 157);
+  color: rgb(78, 189, 157);
 }
 
 .form-container {
-    max-width: 700px;
-    margin: auto;
-    background: #fff;
-    border-radius: 10px;
-    border: 3px solid rgb(78, 189, 157);
-    box-shadow: 0 4px 12px rgb(78, 189, 158);
-    /* border-colored shadow */
-    font-family: "Oswald", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 900;
-    font-style: normal;
-    font-size: 18px;
+  max-width: 700px;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  border: 3px solid rgb(78, 189, 157);
+  box-shadow: 0 4px 12px rgb(78, 189, 158);
+  /* border-colored shadow */
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 18px;
 }
 
 .volunteer_form {
-    padding: 30px;
+  padding: 30px;
 }
 
 .custom-checkbox {
-    border: 2px solid #000;
-    border-radius: 4px;
-    appearance: none;
-    -webkit-appearance: none;
-    outline: none;
+  border: 2px solid #000;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
 }
 
 .full-width-btn {
-    background-color: rgb(78, 189, 157);
-    color: white;
-    width: 100%;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 18px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgb(78, 189, 157);
+  color: white;
+  width: 100%;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .full-width-btn:hover {
-    background-color: rgb(65, 165, 138);
-    transform: translateY(-2px);
+  background-color: rgb(65, 165, 138);
+  transform: translateY(-2px);
 }
 
 .full-width-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 
@@ -70,8 +70,10 @@
 .otp-modal {
   position: fixed;
   z-index: 1000;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
@@ -138,31 +140,89 @@
 
 /* CSS for form validation feedback */
 
-  .valid-feedback-icon, .invalid-feedback-icon {
-    position: absolute;
-    right: 10px;
-    top: 40%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    pointer-events: none;
-  }
-  .valid-feedback-icon {
-    color: green;
-  }
-  .invalid-feedback-icon {
-    color: red;
-  }
-  /* To position icons correctly, make inputs relative */
-  .form-control {
-    position: relative;
-    padding-right: 30px;
-  }
-  /* For selects */
-  .form-select {
-    position: relative;
-    padding-right: 30px;
-  }
-  /* Container to position icon */
-  .input-group-validation {
-    position: relative;
-  }
+.valid-feedback-icon,
+.invalid-feedback-icon {
+  position: absolute;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.valid-feedback-icon {
+  color: green;
+}
+
+.invalid-feedback-icon {
+  color: red;
+}
+
+/* To position icons correctly, make inputs relative */
+.form-control {
+  position: relative;
+  padding-right: 30px;
+}
+
+/* For selects */
+.form-select {
+  position: relative;
+  padding-right: 30px;
+}
+
+/* Container to position icon */
+.input-group-validation {
+  position: relative;
+}
+
+/* Registration Successful pop up message  */
+#popupMsg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 400px;
+  background: #006eff;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+  z-index: 9999;
+  text-align: center;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 300;
+}
+
+#popupMsg .title {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+#popupMsg .reg-id {
+  font-size: 22px;
+  letter-spacing: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 6px;
+  user-select: all;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+#popupMsg button {
+  margin-top: 16px;
+  background: #ffffff;
+  color: #1a73e8;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+#popupMsg button:hover {
+  background-color: #e0e0e0;
+}

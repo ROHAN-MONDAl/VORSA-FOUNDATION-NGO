@@ -27,4 +27,5 @@ $stmt->close();
 unset($_SESSION['otp']);
 unset($_SESSION['form_data']);
 
-echo "<script>alert('Registration successful. Your ID is {$data['registration_id']}'); window.location='index.php';</script>";
+header("Location: index.php?msg=success&id=" . urlencode($data['registration_id']));
+exit();

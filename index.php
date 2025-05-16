@@ -143,6 +143,22 @@
                 </div>
             </div>
 
+            <!-- Registration Successful pop up message -->
+            <?php if (isset($_GET['msg']) && $_GET['msg'] === 'success' && isset($_GET['id'])): ?>
+                <div id="popupMsg">
+                    <strong>Registration Successful</strong>
+                    <p style="margin-top: 20px;">
+                        Thank you for registering with <strong>Vorsha Foundation</strong>.
+                        A confirmation email has been sent to your registered address.
+                        You will be notified once your application has been reviewed and approved by our team.
+                    </p>
+                    <p>Your registration ID is:</p>
+                    <div class="reg-id"><?php echo htmlspecialchars($_GET['id']); ?></div>
+                    <br><br>
+                    <button onclick="document.getElementById('popupMsg').style.display='none'">Close</button>
+                </div>
+            <?php endif; ?>
+
 
 
         </div>

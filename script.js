@@ -285,7 +285,7 @@ $(document).ready(function () {
   document.querySelector(".volunteer_form").addEventListener("submit", function (e) {
     const captchaResponse = grecaptcha.getResponse();
     if (captchaResponse.length === 0) {
-      alert("Please verify the reCAPTCHA before submitting.");
+      alert("Please check the reCAPTCHA before submitting.");
       e.preventDefault(); // Stop form submission
     }
   });
