@@ -1,61 +1,61 @@
 // Initialize the datepicker on the DOB input
 const dobInput = document.getElementById("dob");
 const datepicker = new Datepicker(dobInput, {
-    format: "dd-mm-yyyy",
-    autohide: true,
+  format: "dd-mm-yyyy",
+  autohide: true,
 });
 
 // State to District Mapping
 const stateDistricts = {
-    "West Bengal": [
-        "Alipurduar", "Bankura", "Birbhum", "Cooch Behar", "Dakshin Dinajpur", "Darjeeling",
-        "Hooghly", "Howrah", "Jalpaiguri", "Jhargram", "Kalimpong", "Kolkata", "Malda",
-        "Murshidabad", "Nadia", "North 24 Parganas", "Paschim Bardhaman", "Paschim Medinipur",
-        "Purba Bardhaman", "Purba Medinipur", "Purulia", "South 24 Parganas", "Uttar Dinajpur"
-    ],
-    "Maharashtra": [
-        "Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur", "Kolhapur"
-    ],
-    "Gujarat": [
-        "Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Gandhinagar", "Jamnagar"
-    ],
-    "Tamil Nadu": [
-        "Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli", "Vellore"
-    ],
-    "Uttar Pradesh": [
-        "Lucknow", "Kanpur", "Varanasi", "Agra", "Noida", "Ghaziabad", "Meerut", "Prayagraj"
-    ],
-    "Bihar": [
-        "Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga"
-    ]
-    // Add more states and districts as needed
+  "West Bengal": [
+    "Alipurduar", "Bankura", "Birbhum", "Cooch Behar", "Dakshin Dinajpur", "Darjeeling",
+    "Hooghly", "Howrah", "Jalpaiguri", "Jhargram", "Kalimpong", "Kolkata", "Malda",
+    "Murshidabad", "Nadia", "North 24 Parganas", "Paschim Bardhaman", "Paschim Medinipur",
+    "Purba Bardhaman", "Purba Medinipur", "Purulia", "South 24 Parganas", "Uttar Dinajpur"
+  ],
+  "Maharashtra": [
+    "Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur", "Kolhapur"
+  ],
+  "Gujarat": [
+    "Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Gandhinagar", "Jamnagar"
+  ],
+  "Tamil Nadu": [
+    "Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli", "Vellore"
+  ],
+  "Uttar Pradesh": [
+    "Lucknow", "Kanpur", "Varanasi", "Agra", "Noida", "Ghaziabad", "Meerut", "Prayagraj"
+  ],
+  "Bihar": [
+    "Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga"
+  ]
+  // Add more states and districts as needed
 };
 
 // Load states on page load
 window.onload = function () {
-    const stateSelect = document.getElementById("state");
-    Object.keys(stateDistricts).forEach(state => {
-        const option = document.createElement("option");
-        option.value = state;
-        option.textContent = state;
-        stateSelect.appendChild(option);
-    });
+  const stateSelect = document.getElementById("state");
+  Object.keys(stateDistricts).forEach(state => {
+    const option = document.createElement("option");
+    option.value = state;
+    option.textContent = state;
+    stateSelect.appendChild(option);
+  });
 };
 
 // Load districts based on selected state
 function loadDistricts() {
-    const state = document.getElementById("state").value;
-    const districtSelect = document.getElementById("district");
-    districtSelect.innerHTML = '<option value="" disabled selected>Select your district</option>';
+  const state = document.getElementById("state").value;
+  const districtSelect = document.getElementById("district");
+  districtSelect.innerHTML = '<option value="" disabled selected>Select your district</option>';
 
-    if (stateDistricts[state]) {
-        stateDistricts[state].forEach(district => {
-            const option = document.createElement("option");
-            option.value = district;
-            option.textContent = district;
-            districtSelect.appendChild(option);
-        });
-    }
+  if (stateDistricts[state]) {
+    stateDistricts[state].forEach(district => {
+      const option = document.createElement("option");
+      option.value = district;
+      option.textContent = district;
+      districtSelect.appendChild(option);
+    });
+  }
 }
 
 
@@ -64,7 +64,7 @@ function loadDistricts() {
 $(document).ready(function () {
 
   // Wrap inputs/selects inside a div for positioning icons
-  $(".volunteer_form input, .volunteer_form select").each(function() {
+  $(".volunteer_form input, .volunteer_form select").each(function () {
     if (!$(this).parent().hasClass('input-group-validation')) {
       $(this).wrap('<div class="input-group-validation"></div>');
     }
@@ -278,54 +278,45 @@ $(document).ready(function () {
 
     if (!valid) {
       e.preventDefault(); // stop form submit
-      alert("Please fix the errors in the form before submitting.");
+      alert("Please enter correct infornation before submitting.");
     }
   });
-});
 
-
-
-
-// captcha verification and email verification
-$('#volunteer_form').submit(function (e) {
-    e.preventDefault();
-
-    // Check if CAPTCHA is clicked
-    var captchaResponse = grecaptcha.getResponse();
+  document.querySelector(".volunteer_form").addEventListener("submit", function (e) {
+    const captchaResponse = grecaptcha.getResponse();
     if (captchaResponse.length === 0) {
-        alert("Please complete the CAPTCHA.");
-        return false;
+      alert("Please verify the reCAPTCHA before submitting.");
+      e.preventDefault(); // Stop form submission
     }
+  });
 
-    // Proceed with AJAX form submission
-    var formData = $(this).serialize();
-
-    $.post('send_code.php', formData, function (response) {
-        if (response.success) {
-            alert('Verification code sent to your email!');
-            $('#verify_popup').show();
-        } else {
-            alert('Error: ' + response.message);
-            grecaptcha.reset(); // reset CAPTCHA on error
-        }
-    }, 'json');
 });
 
-$('#verify_code_btn').click(function () {
-    const code = $('#verification_code').val();
+// Pop up message box
+$(document).ready(function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("otp") === "1") {
+    $("#otpPromptModal").fadeIn();
+  }
 
-    $.post('verify_code.php', { code: code }, function (response) {
-        if (response.success) {
-            alert('Email verified! Form submitted successfully.');
+  $("#submitOtpBtn").click(function () {
+    const otp = $("#customOtpInput").val().trim();
+    if (otp === "") {
+      alert("Please enter the OTP.");
+      return;
+    }
+    window.location.href = "verify.php?code=" + encodeURIComponent(otp);
+  });
 
-            // Optionally send full data to your save_form.php here
-            // Or you can include hidden field and trigger final backend submit
+  $("#cancelOtpBtn").click(function () {
+    alert("OTP verification is required to complete registration.");
+    $("#otpPromptModal").fadeOut();
+  });
 
-            $('#verify_popup').hide();
-            $('#volunteer_form')[0].reset();
-            grecaptcha.reset();
-        } else {
-            alert('Incorrect code. Please try again.');
-        }
-    }, 'json');
+  // Close modal when clicking outside the modal content
+  $(window).click(function (event) {
+    if ($(event.target).is("#otpPromptModal")) {
+      $("#otpPromptModal").fadeOut();
+    }
+  });
 });

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>VORSA Volunteer Form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Favicon -->
- <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Vanilla Datepicker CSS -->
@@ -21,11 +21,9 @@
     <div class="container py-5">
         <div class="form-container">
 
-            <img src="images/form_banner.jpg" loading="lazy" alt="VORSA Header" class="header-image">
+            <h3 class="text-center mt-4 mb-4 heading_form_name"><strong>Volunteer Registration Form</strong></h3>
 
-            <h3 class="text-center mb-4 heading_form_name"><strong>Volunteer Registration Form</strong></h3>
-
-            <form class="volunteer_form">
+            <form class="volunteer_form" method="POST" action="register.php">
 
                 <!-- Name -->
                 <div class="mb-3">
@@ -58,7 +56,7 @@
                     <!-- State Dropdown -->
                     <div class="col-md-6 mb-3">
                         <label for="state" class="form-label">State:</label>
-                        <select id="state" class="form-select" onchange="loadDistricts()" required>
+                        <select id="state" class="form-select" name="state" onchange="loadDistricts()" required>
                             <option value="" disabled selected>Select your state</option>
                         </select>
                     </div>
@@ -66,7 +64,7 @@
                     <!-- District Dropdown -->
                     <div class="col-md-6 mb-3">
                         <label for="district" class="form-label">District:</label>
-                        <select id="district" class="form-select" required>
+                        <select id="district" class="form-select" name="district" required>
                             <option value="" disabled selected>Select your district</option>
                         </select>
                     </div>
@@ -119,12 +117,10 @@
 
                 <div style="text-align: center;">
                     <div style="display: inline-block; transform: scale(0.85);">
-                        <!-- reCAPTCHA -->
-                        <div class="g-recaptcha mb-3" data-sitekey="YOUR_SITE_KEY_HERE"></div>
+                        <!-- reCAPTCHA widget -->
+                        <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                     </div>
                 </div>
-
-
 
                 <!-- Submit Button -->
                 <div>
@@ -132,13 +128,25 @@
                 </div>
 
             </form>
-            <!-- Verification Popup -->
-            <div id="verify_popup" style="display:none; margin-top:20px;">
-                <label>Enter the 6-digit code sent to your email:</label>
-                <input type="text" id="verification_code" maxlength="6" class="form-control my-2" />
-                <button id="verify_code_btn" class="btn btn-primary">Verify Code</button>
+
+
+            <!-- OTP Modal -->
+            <div id="otpPromptModal" class="otp-modal" style="display: none;">
+                <div class="otp-modal-content">
+                    <h5>OTP Verification</h5>
+                    <p>Please check your email and enter the OTP below:</p>
+                    <input type="number" id="customOtpInput" maxlength="6" placeholder="Enter OTP" class="otp-input">
+                    <div class="otp-buttons">
+                        <button type="button" id="submitOtpBtn" class="btn btn-primary">Submit</button>
+                        <button type="button" id="cancelOtpBtn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
             </div>
+
+
+
         </div>
+
     </div>
 
     <!-- Captcha code -->
