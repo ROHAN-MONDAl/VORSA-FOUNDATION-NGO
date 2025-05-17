@@ -110,11 +110,11 @@ session_start();
 
                             <label class="form-check-label" for="remember">Remember Me</label>
                         </div>
-                        <a href="#" id="forgotLink" class="text-decoration-none">Forgot ID/Password?</a>
+                        <a href="#" id="forgotLink" class="text-decoration-none">Forgot Username?</a>
                     </div>
 
                     <div style="display: flex; justify-content: center; margin-bottom: 10px;">
-                        <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE" style="display: inline-block; transform: scale(0.85);"></div>
+                        <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" style="display: inline-block; transform: scale(0.85);"></div>
                     </div>
 
                     <button type="submit" class="btn btn-success w-100">Login</button>
@@ -131,8 +131,8 @@ session_start();
         <div id="forgotModal" class="modal">
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
-                <form id="forgotForm" action="includes/send-otp.php" method="POST">
-                    <h2>Forgot Password</h2>
+                <form id="forgotForm" action="send-otp.php" method="POST">
+                    <h2>Forgot Uesrname</h2>
                     <label>Enter your Email</label>
                     <input type="email" id="forgot_email" name="email" required class="form-control" />
                     <span class="error" id="forgot_email_error"></span>
