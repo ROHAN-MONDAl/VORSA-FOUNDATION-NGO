@@ -1,3 +1,9 @@
+/* Oswald font */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Oswald:wght@200..700&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+
 /* Global Reset */
 *,
 *::before,
@@ -10,16 +16,21 @@
 body,
 html {
   min-height: 100vh;
-  overflow-y: auto; /* ✅ Enables scrolling */
-  background: url('https://media.istockphoto.com/id/535555239/photo/happy-indian-school-children.jpg?s=612x612&w=0&k=20&c=fcpTUHiHJuaeRS-xHJy4oOflwKpBooiPecyewzohvhk=') no-repeat center center fixed;
+  overflow-y: auto;
+  /* ✅ Enables scrolling */
+  background: url('https://www.cry.org/wp-content/uploads/Volunteer-picture-1.png') no-repeat center center fixed;
   background-size: cover;
   height: auto;
+  font-family: "Roboto Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 
 /* Navbar */
 .navbar {
   width: 100%;
-  background-color: #006400;
+  background-color: #008000;
   color: white;
   position: sticky;
   top: 0;
@@ -40,7 +51,7 @@ html {
 .nav-logo {
   display: flex;
   align-items: center;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: white;
   text-decoration: none;
@@ -48,13 +59,29 @@ html {
 
 .nav-logo-img,
 .navbar-brand img {
-  width: 38px;
-  height: 38px;
+  width: 50px;
+  height: 50px;
   margin-right: 14px;
   object-fit: contain;
+  border-radius: 50%;
 }
 
-.nav-menu {
+/* Responsive logo for mobile */
+@media (max-width: 768px) {
+
+  .nav-logo-img,
+  .navbar-brand img {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+  }
+
+  .nav-logo {
+    font-size: 1.1rem;
+  }
+}
+
+.nav-m30enu {
   list-style: none;
   display: flex;
   gap: 20px;
@@ -78,7 +105,8 @@ html {
   width: 30px;
   height: 30px;
   padding: 0;
-  border: none; /* Optional: remove border */
+  border: none;
+  /* Optional: remove border */
   background: transparent;
 }
 
@@ -95,7 +123,7 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 50, 0, 0.4);
+  background: rgba(0, 0, 0, 0.63);
   z-index: 0;
 }
 
@@ -172,6 +200,11 @@ input.invalid {
   text-decoration: underline;
 }
 
+.form-check-input.checked-green {
+  background-color: #198754 !important;
+  border-color: #198754 !important;
+}
+
 /* Button */
 button {
   width: 100%;
@@ -194,7 +227,8 @@ button:hover {
 .modal {
   display: none;
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.55);
@@ -203,6 +237,7 @@ button:hover {
   justify-content: center;
   align-items: center;
   transition: background 0.3s;
+
 }
 
 /* Show modal */
@@ -218,7 +253,7 @@ button:hover {
   width: 90%;
   max-width: 400px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -227,7 +262,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: modalFadeIn 0.35s cubic-bezier(.4,2,.6,1) both;
+  animation: modalFadeIn 0.35s cubic-bezier(.4, 2, .6, 1) both;
 }
 
 @keyframes modalFadeIn {
@@ -235,6 +270,7 @@ button:hover {
     opacity: 0;
     transform: translate(-50%, calc(-50% - 40px)) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -265,7 +301,7 @@ button:hover {
 
 .close-btn:hover {
   background: #e0e0e0;
-  color: #006400 ;
+  color: #006400;
 }
 
 /* Responsive modal */
@@ -274,6 +310,7 @@ button:hover {
     padding: 18px 8px 16px 8px;
     max-width: 95vw;
   }
+
   .close-btn {
     top: 8px;
     right: 8px;
@@ -285,7 +322,7 @@ button:hover {
 
 /* Footer */
 .footer {
-  background-color: #006400;
+  background-color: #008000;
   color: white;
   text-align: center;
   padding: 12px;
