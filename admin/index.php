@@ -12,6 +12,8 @@ session_start();
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <!-- Custom css -->
     <link rel="stylesheet" href="css/style.css" />
 
@@ -33,8 +35,9 @@ session_start();
                     style="outline:none; box-shadow:none !important; border:none !important; background:transparent;"
                     onfocus="this.style.outline='none'; this.style.boxShadow='none';"
                     onblur="this.style.outline=''; this.style.boxShadow='';">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="ri-menu-2-line" style="font-size: 1.5rem; color: #fff;"></i>
                 </button>
+
 
                 <!-- Logo + Brand -->
                 <a class="navbar-brand d-flex align-items-center mx-auto" href="#">
@@ -64,12 +67,13 @@ session_start();
 
             <!-- Mobile Offcanvas Menu -->
             <div
-                class="offcanvas offcanvas-start text-bg-success d-lg-none"
+                class="offcanvas offcanvas-start d-lg-none" style="background-color: #008000;"
                 tabindex="-1"
                 id="mobileMenu"
                 aria-labelledby="mobileMenuLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+                    <img src="images/logo.png" alt="Logo" class="nav-logo-img me-2" style="height:40px; width:auto;" />
+                    <h4 class="mb-0 text-white">Vorsha Foundation</h4>
                     <button
                         type="button"
                         class="btn-close btn-close-white"
@@ -124,7 +128,13 @@ session_start();
 
         <!-- Footer -->
         <footer class="footer d-flex align-items-center justify-content-center text-white mt-auto" style="height: 50px;">
-            <p class="mb-0">© 2025 Vorsha Foundation. All rights reserved.</p>
+            <p class="mb-0" style="color: #fff;">
+                © <span id="currentYear"></span> Vorsha Foundation. Design and developed by
+                <a href="http://" style="color: #fff; text-decoration: none;">Web2infinity</a> All rights reserved.
+            </p>
+            <script>
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
+            </script>
         </footer>
 
         <!-- Forgot Password Modal -->
