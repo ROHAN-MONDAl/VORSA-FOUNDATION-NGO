@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 setcookie('admin_remember', '', time() - 3600, "/");
             }
 
-            header("Location: dashboard.php");
+            header("Location: dashboard/dashboard.php");
             exit;
         } else {
             // Wrong password
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Auto-login from cookie
 if (isset($_COOKIE['admin_remember']) && !isset($_SESSION['admin'])) {
     $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    header("Location: dashboard.php");
+    header("Location: dashboard/dashboard.php");
     exit;
 }
 ?>
