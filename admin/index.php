@@ -99,6 +99,18 @@ session_start();
             <div class="login-container w-100" style="max-width: 400px;">
                 <form id="loginForm" action="validate-login.php" method="POST">
                     <h2>Admin Login</h2>
+                    
+                    <?php if (isset($_SESSION['notification'])): ?>
+                        <div id="notification" style="background:#f8d7da;color:#721c24;padding:10px;border-radius:5px;margin-bottom:15px;">
+                            <?php echo $_SESSION['notification']; ?>
+                        </div>
+                        <script>
+                            setTimeout(() => {
+                                const note = document.getElementById("notification");
+                                if (note) note.style.display = "none";
+                            }, 5000);
+                        </script>
+                    <?php endif; ?>
 
                     <label>User ID</label>
                     <input type="text" name="user_id" id="user_id" class="form-control" />
