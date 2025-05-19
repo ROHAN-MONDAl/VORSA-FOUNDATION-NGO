@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+// Include database connection and functions
+include('../../server.php');
 // Check if admin session exists
 if (!isset($_SESSION['admin'])) {
     // If no session but "remember me" cookie exists, create session from cookie
@@ -135,6 +136,12 @@ if (!isset($_SESSION['admin'])) {
                         <!-- pending_requests Tab -->
                         <div class="tab-pane fade" id="pending_requests" role="tabpane">
                             <div class="table-responsive mt-4">
+                                <?php
+                                // Fetch all registrations
+                                $sql = "SELECT * FROM registrations ORDER BY id DESC";
+                                $result = mysqli_query($conn, $sql);
+                                ?>
+
                                 <table class="table table-green align-middle">
                                     <thead>
                                         <tr>
@@ -154,26 +161,47 @@ if (!isset($_SESSION['admin'])) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td>
-                                                <div class="action-buttons">
-                                                    <button class="btn btn-approve btn-sm"><i class="ri-check-line"></i> Approve</button>
-                                                    <button class="btn btn-reject btn-sm"><i class="ri-close-line"></i> Reject</button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        $sl = 1;
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                                <tr>
+                                                    <td class="text-wrap"><?= $sl++ ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['registration_id']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['name']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['dob']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['mobile']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['email']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['state']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['district']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['village']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['block']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['pin']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['blood_group']) ?></td>
+                                                    <td>
+                                                        <div class="d-grid gap-2 d-md-flex">
+                                                            <form action="handle_action.php" method="POST" style="display:inline;">
+                                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                                                <input type="hidden" name="action" value="approve">
+                                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                                            </form>
+
+                                                            <form action="handle_action.php" method="POST" style="display:inline;">
+                                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                                                <input type="hidden" name="action" value="reject">
+                                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                                            </form>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                        <?php
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="13" class="text-center text-muted">No data found</td></tr>';
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -188,6 +216,7 @@ if (!isset($_SESSION['admin'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/script.js"></script>
+
 </body>
 
 </html>
