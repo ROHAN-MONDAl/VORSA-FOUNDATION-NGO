@@ -1,5 +1,4 @@
 <?php
-// Load DB config and other required files
 require '../../server.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -14,17 +13,17 @@ function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath)
     require('fpdf/fpdf.php');
     $pdf = new FPDF('L', 'mm', 'A4');
     $pdf->AddPage();
+
     $backgroundPath = __DIR__ . '/certificate/certificate_bg.jpg';
     if (!file_exists($backgroundPath)) {
-        echo "<script>
-    alert('Certificate background image not found.');
-    window.location.href = 'dashboard.php';
-</script>";
-        exit(); // Stop further execution
+        echo 'Certificate background image not found.';
+        exit;
     }
+
     $pdf->Image($backgroundPath, 0, 0, 297);
     $pdf->SetFont('Arial', '', 16);
     $pdf->SetTextColor(0, 0, 0);
+
     $lines = [
         "This is to certify that $name,",
         "residing at $address,",
@@ -32,12 +31,14 @@ function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath)
         "as of $date.",
         "Volunteer ID: $volunteerId"
     ];
+
     $y = 120;
     foreach ($lines as $line) {
         $pdf->SetXY(10, $y);
         $pdf->Cell(0, 10, $line, 0, 1, 'C');
         $y += 12;
     }
+
     $pdf->Output('F', $savePath);
 }
 
@@ -46,10 +47,10 @@ function sendCertificateEmail($to, $name, $filePath)
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';  // Replace with your SMTP host
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'codecomettechnology@gmail.com'; // your SMTP username
-        $mail->Password = 'nqqt ncdb ixbl uobl';         // your SMTP password
+        $mail->Username = 'codecomettechnology@gmail.com';
+        $mail->Password = 'nqqt ncdb ixbl uobl';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
@@ -62,13 +63,15 @@ function sendCertificateEmail($to, $name, $filePath)
         $mail->Body = "Dear $name,<br><br>Thank you for registering with VORSA. Your certificate is attached.";
         $mail->send();
     } catch (Exception $e) {
-        die("Email sending failed: " . $mail->ErrorInfo);
+        echo 'Email failed: ' . $mail->ErrorInfo;
+        exit;
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['id'], $_POST['action'])) {
-        die("Missing data.");
+        echo 'Missing data.';
+        exit;
     }
 
     $id = intval($_POST['id']);
@@ -77,7 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'approve') {
         $res = mysqli_query($conn, "SELECT * FROM registrations WHERE id = $id");
         if (!$res || mysqli_num_rows($res) === 0) {
-            die("Registration not found.");
+            echo 'Registration not found.';
+            exit;
         }
 
         $row = mysqli_fetch_assoc($res);
@@ -117,23 +121,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         sendCertificateEmail($email, $name, $certPath);
         mysqli_query($conn, "DELETE FROM registrations WHERE id = $id");
 
-        header('Location: dashboard.php');
+        echo 'approved';
         exit;
+
     } elseif ($action === 'reject') {
         mysqli_query($conn, "DELETE FROM registrations WHERE id = $id");
-        header('Location: dashboard.php');
+        echo 'rejected';
         exit;
+
     } else {
-        echo "<script>
-            alert('Invalid action.');
-            window.location.href = 'dashboard.php';
-        </script>";
-        exit();
+        echo 'Invalid action.';
+        exit;
     }
 } else {
-    echo "<script>
-        alert('Invalid request method.');
-        window.location.href = 'dashboard.php';
-    </script>";
-    exit();
+    echo 'Invalid request method.';
+    exit;
 }

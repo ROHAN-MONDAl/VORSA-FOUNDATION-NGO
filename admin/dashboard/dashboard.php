@@ -181,19 +181,10 @@ if (!isset($_SESSION['admin'])) {
                                                     <td class="text-wrap"><?= htmlspecialchars($row['blood_group']) ?></td>
                                                     <td>
                                                         <div class="d-grid gap-2 d-md-flex">
-                                                            <form action="handle_action.php" method="POST" style="display:inline;">
-                                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                                                <input type="hidden" name="action" value="approve">
-                                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                                                            </form>
-
-                                                            <form action="handle_action.php" method="POST" style="display:inline;">
-                                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                                                <input type="hidden" name="action" value="reject">
-                                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                                            </form>
-
+                                                            <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['id'] ?>">Approve</button>
+                                                            <button class="btn btn-danger btn-sm reject-btn" data-id="<?= $row['id'] ?>">Reject</button>
                                                         </div>
+
                                                     </td>
                                                 </tr>
                                         <?php
@@ -210,12 +201,27 @@ if (!isset($_SESSION['admin'])) {
                 </div>
             </div>
             <!-- End Main Content -->
+            <!-- Loading Screen Overlay (hidden by default) -->
+            <!-- Loading Screen Overlay (hidden by default) -->
+            <div id="loading-screen" style="
+    display: none; /* hide initially */
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+">
+                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="js/script.js"></script>
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="js/script.js"></script>
 
 </body>
 
