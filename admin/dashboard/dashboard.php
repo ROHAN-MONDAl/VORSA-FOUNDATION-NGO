@@ -201,14 +201,16 @@ if (!isset($_SESSION['admin'])) {
                 </div>
             </div>
             <!-- End Main Content -->
-            <!-- Loading Screen Overlay (hidden by default) -->
-            <!-- Loading Screen Overlay (hidden by default) -->
+            <!-- Loader (centered with spinner) -->
             <div id="loading-screen" style="
-    display: none; /* hide initially */
+    display: none;
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(255, 255, 255, 0.7);
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
     z-index: 9999;
+    display: flex;
     justify-content: center;
     align-items: center;
 ">
@@ -216,6 +218,11 @@ if (!isset($_SESSION['admin'])) {
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+
+
+
+
+
 
         </div>
         <!-- Bootstrap JS and dependencies -->

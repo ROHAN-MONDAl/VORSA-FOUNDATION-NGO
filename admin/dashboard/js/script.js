@@ -1,8 +1,8 @@
 $(document).ready(function () {
     const $sidebar = $('#sidebar-wrapper');
-    const $loadingScreen = $('#loading-screen');  // Cache loading screen div
+    const $loadingScreen = $('#loading-screen');  // Cache the loading screen div
 
-    // Sidebar toggle
+    // --- Sidebar toggle handlers ---
     $('#sidebar-toggle-btn, #hamburger-btn').on('click', function () {
         $sidebar.toggleClass('closed');
     });
@@ -11,58 +11,72 @@ $(document).ready(function () {
         $sidebar.addClass('closed');
     });
 
+    // Highlight active sidebar link
     $('.sidebar-nav').on('click', '.nav-link', function () {
         $('.sidebar-nav .nav-link').removeClass('active');
         $(this).addClass('active');
     });
 
+    // Initially close sidebar
     $sidebar.addClass('closed');
 
-    // Handle approve/reject button click with AJAX
-    $(document).ready(function () {
-        // Handle Approve/Reject button clicks using event delegation
-        $(document).on('click', '.approve-btn, .reject-btn', function (e) {
-            e.preventDefault();
+    // --- Loader functions ---
+    function showLoading() {
+        $loadingScreen.fadeIn(200); // Show the loading overlay with fade-in
+    }
 
-            const $button = $(this);
-            const id = $button.data('id');
-            const action = $button.hasClass('approve-btn') ? 'approve' : 'reject';
+    function hideLoading() {
+        $loadingScreen.fadeOut(200); // Hide the loading overlay with fade-out
+    }
 
-            // Show loader (set display: flex)
-            $('#loading-screen').css('display', 'flex');
+    // --- AJAX Approve/Reject Handler ---
+    $(document).on('click', '.approve-btn, .reject-btn', function (e) {
+        e.preventDefault(); // Prevent default form or link action
 
-            $.ajax({
-                url: 'handle_action.php',
-                method: 'POST',
-                data: { id: id, action: action },
-                success: function (response) {
-                    // Hide loader
-                    $('#loading-screen').css('display', 'none');
+        const $button = $(this);
+        const id = $button.data('id'); // ID of the registration row
+        const action = $button.hasClass('approve-btn') ? 'approve' : 'reject'; // Determine action type
 
-                    if (response === 'approved' || response === 'rejected') {
-                        // Remove the corresponding row
-                        const $row = $button.closest('tr');
-                        $row.fadeOut(300, () => {
-                            $row.remove();
+        showLoading(); // Show loader before AJAX call
 
-                            const $tbody = $('table.table tbody');
-                            if ($tbody.children('tr').length === 0) {
-                                $tbody.append(`<tr><td colspan="13" class="text-center text-muted">No data found</td></tr>`);
-                            }
-                        });
-                    } else {
-                        alert('Error: ' + response);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    // Hide loader
-                    $('#loading-screen').css('display', 'none');
+        $.ajax({
+            url: 'handle_action.php',
+            method: 'POST',
+            data: { id: id, action: action },
+            success: function (response) {
+                hideLoading(); // Hide loader once response received
 
-                    console.error('Server error:', textStatus, errorThrown);
-                    alert('Server error occurred. Please try again.');
+                if (response === 'approved' || response === 'rejected') {
+                    // Remove table row after success
+                    const $row = $button.closest('tr');
+                    $row.fadeOut(300, () => {
+                        $row.remove();
+
+                        // If table is empty, show fallback message
+                        const $tbody = $('table.table tbody');
+                        if ($tbody.children('tr').length === 0) {
+                            $tbody.append('<tr><td colspan="13" class="text-center text-muted">No data found</td></tr>');
+                        }
+                    });
+
+                } else if (response === 'duplicate') {
+                    // Duplicate volunteer detected
+                    alert('Duplicate volunteer entry detected. Redirecting to dashboard.');
+                    window.location.href = 'dashboard.php';
+
+                } else {
+                    // Any other error response
+                    alert('Error: ' + response);
                 }
-            });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                hideLoading(); // Hide loader if error occurs
+                console.error('AJAX error:', textStatus, errorThrown);
+                alert('Server error occurred. Please try again.');
+            }
         });
     });
 
+    // --- Hide loader on initial page load (if it was accidentally shown) ---
+    hideLoading();
 });
