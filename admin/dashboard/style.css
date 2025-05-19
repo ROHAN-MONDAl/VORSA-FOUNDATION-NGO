@@ -1,6 +1,8 @@
 /*--------------------------------------------------------------
   Base Styles
 --------------------------------------------------------------*/
+/* Oswald font */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Oswald:wght@200..700&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* Set html and body to take full height for full viewport usage */
 html,
@@ -10,12 +12,13 @@ body {
 
 /* Main body background, font, and overlay image */
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #e6f9f0 0%, #f8fafc 100%),
-        url('https://media.istockphoto.com/id/1419410282/photo/silent-forest-in-spring-with-beautiful-bright-sun-rays.jpg?s=612x612&w=0&k=20&c=UHeb1pGOw6ozr6utsenXHhV19vW6oiPIxDqhKCS2Llk=') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     position: relative;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 
 /* Overlay on background image for readability of content */
