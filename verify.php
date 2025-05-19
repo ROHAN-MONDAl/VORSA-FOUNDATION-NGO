@@ -19,7 +19,7 @@ if (isset($_GET['code'])) {
 
 $data = $_SESSION['form_data'];
 
-$stmt = $conn->prepare("INSERT INTO volunteers (registration_id, name, dob, mobile, email, state, district, village, block, pin, blood_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO registrations (registration_id, name, dob, mobile, email, state, district, village, block, pin, blood_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("sssssssssss", $data['registration_id'], $data['name'], $data['dob'], $data['mobile'], $data['email'], $data['state'], $data['district'], $data['village'], $data['block'], $data['pin'], $data['blood']);
 $stmt->execute();
 $stmt->close();
