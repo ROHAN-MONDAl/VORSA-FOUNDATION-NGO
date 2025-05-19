@@ -20,6 +20,11 @@ session_start();
 </head>
 
 <body>
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
     <div class="container-fluid min-vh-100 d-flex flex-column p-0">
         <nav class="navbar navbar-expand-lg navbar-dark shadow sticky-top">
             <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -101,7 +106,7 @@ session_start();
                     <h2>Admin Login</h2>
                     
                     <?php if (isset($_SESSION['notification'])): ?>
-                        <div id="notification" style="background:#f8d7da;color:#721c24;padding:10px;border-radius:5px;margin-bottom:15px;">
+                        <div id="notification" style="background: #d4edda;color: #155724;padding:10px;border-radius:5px;margin-bottom:15px;">
                             <?php echo $_SESSION['notification']; ?>
                         </div>
                         <script>

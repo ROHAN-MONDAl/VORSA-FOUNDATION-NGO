@@ -44,13 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 2. Duplicate check
-    $check = $conn->query("SELECT * FROM volunteers WHERE email='$email' OR mobile='$mobile'");
+    $check = $conn->query("SELECT * FROM  registrations WHERE email='$email' OR mobile='$mobile'");
     if ($check->num_rows > 0) {
         showPopup("Email or mobile already registered.");
     }
 
     // 3. Generate registration ID
-    $latest = $conn->query("SELECT registration_id FROM volunteers ORDER BY id DESC LIMIT 1");
+    $latest = $conn->query("SELECT registration_id FROM  registrations ORDER BY id DESC LIMIT 1");
     if ($latest->num_rows > 0) {
         $row = $latest->fetch_assoc();
         $num = intval(substr($row['registration_id'], 1)) + 1;

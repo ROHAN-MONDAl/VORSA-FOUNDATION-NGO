@@ -149,8 +149,8 @@
                     <h4><strong>Registration Successful</strong></h4>
                     <p style="margin-top: 20px;">
                         Thank you for registering with <strong>Vorsha Foundation</strong>.
-                        A confirmation email has been sent to your registered address.
                         You will be notified once your application has been reviewed and approved by our team.
+                        A confirmation email has been sent to your registered address.
                     </p>
                     <p>Your registration ID is:</p>
                     <div class="reg-id"><?php echo htmlspecialchars($_GET['id']); ?></div>

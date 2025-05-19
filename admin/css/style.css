@@ -10,18 +10,80 @@
   padding: 0;
 }
 
-body,
-html {
+/* Hide scrollbar but keep scroll */
+html,
+body {
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   overflow-y: auto;
-  /* ✅ Enables scrolling */
-  background: url('https://www.cry.org/wp-content/uploads/Volunteer-picture-1.png') no-repeat center center fixed;
-  background-size: cover;
-  height: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
   font-family: "Roboto Slab", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+/* Background image with opacity fade-in */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('https://www.dailypioneer.com/uploads/2017/story/images/big/191286_1.jpg') no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: -1;
+}
+
+body.bg-loaded::before {
+  opacity: 1;
+}
+
+/* Loader overlay */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #e8f5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #c1f0d1;
+  border-top: 6px solid #22c55e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content */
+.content {
+  padding: 2rem;
+  color: #fff;
+  position: relative;
+  z-index: 1;
 }
 
 /* Navbar */

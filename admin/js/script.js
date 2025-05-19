@@ -1,4 +1,16 @@
 $(document).ready(function () {
+
+
+  // Show loader until the image is loaded
+  const bgImg = new Image();
+  bgImg.src = 'https://www.cry.org/wp-content/uploads/Volunteer-picture-1.png';
+  bgImg.onload = () => {
+    document.body.classList.add('bg-loaded');
+    const loader = document.getElementById('loader');
+    loader.classList.add('hidden');
+  };
+
+  
   // Helper: clear errors and reset input classes inside a form
   function clearErrors(form) {
     form.find('.error').text('');
@@ -98,3 +110,4 @@ $(document).ready(function () {
     $('#forgotForm')[0].reset();
   });
 });
+

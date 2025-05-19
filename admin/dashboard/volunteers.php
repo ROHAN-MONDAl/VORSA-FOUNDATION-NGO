@@ -47,8 +47,8 @@ if (!isset($_SESSION['admin'])) {
                 <div class="brand-name">Vorsa Foundation</div>
             </div>
             <nav class="sidebar-nav mt-4">
-                <a class="nav-link active" href="dashboard.php" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
-                <a class="nav-link" href="volunteers.php" data-menu="projects"><i class="ri-team-line"></i> Volunteers </a>
+                <a class="nav-link " href="dashboard.php" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
+                <a class="nav-link active" href="volunteers.php" data-menu="projects"><i class="ri-team-line"></i> Volunteers </a>
             </nav>
         </div>
         <!-- Page Content -->
@@ -82,63 +82,17 @@ if (!isset($_SESSION['admin'])) {
             <!-- Main Content -->
             <div class="container-fluid">
                 <div class="dashboard-card">
-                    <div class="dashboard-title p-2 text-center">Welcome to Dashboard</div>
-                    <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, donations, volunteers, and more.</div>
-                    <!-- Tabs -->
-                    <div class="dashboard-tabs-wrapper">
-                        <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="form-tab" data-bs-toggle="tab" data-bs-target="#pending_requests" type="button" role="tab">Registration Requests</button>
-                            </li>
-                        </ul>
-                    </div>
-
-
+                    <div class="dashboard-title p-2 text-center">Volunteers</div>
+                    <!-- <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, donations, volunteers, and more.</div> -->
                     <div class="tab-content" id="dashboardTabsContent">
-                        <!-- Overview Tab -->
-                        <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                            <div class="row mt-4">
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-team-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">58</h4>
-                                            <p class="card-text">Volunteers</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-user-received-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">₹ 1,20,000</h4>
-                                            <p class="card-text">Pending Requests</p>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-medal-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">12</h4>
-                                            <p class="card-text">Certificates</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- pending_requests Tab -->
-                        <div class="tab-pane fade" id="pending_requests" role="tabpane">
+                        <!-- Volunteers Tab -->
+                        <div id="volunteers" role="tabpanel">
                             <div class="table-responsive mt-4">
                                 <table class="table table-green align-middle">
                                     <thead>
                                         <tr>
-                                            <th>Slno.</th>
+                                           <th>Slno.</th>
                                             <th>Registration Id</th>
                                             <th>Name</th>
                                             <th>Dob</th>
@@ -150,6 +104,7 @@ if (!isset($_SESSION['admin'])) {
                                             <th>Block</th>
                                             <th>Pin</th>
                                             <th>Blood Group</th>
+                                            <th>Share</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -169,8 +124,12 @@ if (!isset($_SESSION['admin'])) {
                                             <td class="text-wrap">1</td>
                                             <td>
                                                 <div class="action-buttons">
-                                                    <button class="btn btn-approve btn-sm"><i class="ri-check-line"></i> Approve</button>
-                                                    <button class="btn btn-reject btn-sm"><i class="ri-close-line"></i> Reject</button>
+                                                    <button class="btn btn-approve btn-sm"><i class="ri-share-line"></i> Share </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-danger btn-sm"><i class="ri-file-edit-line"></i> Edit</button>
                                                 </div>
                                             </td>
                                         </tr>

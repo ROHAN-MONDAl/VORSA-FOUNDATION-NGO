@@ -21,7 +21,7 @@ if (!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Business Dashboard</title>
     <!-- favicon -->
-    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+     <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <!-- Remix Icon -->
@@ -47,8 +47,9 @@ if (!isset($_SESSION['admin'])) {
                 <div class="brand-name">Vorsa Foundation</div>
             </div>
             <nav class="sidebar-nav mt-4">
-                <a class="nav-link active" href="dashboard.php" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
-                <a class="nav-link" href="volunteers.php" data-menu="projects"><i class="ri-team-line"></i> Volunteers </a>
+                <a class="nav-link active" href="#" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
+                <a class="nav-link" href="#" data-menu="projects"><i class="ri-team-line"></i> Voluteers </a>
+                <a class="nav-link" href="#" data-menu="donations"><i class="ri-hand-heart-line"></i> Certificates</a>
             </nav>
         </div>
         <!-- Page Content -->
@@ -69,7 +70,7 @@ if (!isset($_SESSION['admin'])) {
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center" style="margin-left:2%;">
                             <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="settings.php"><i class="ri-settings-3-line me-2"></i>Settings</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line me-2"></i>Settings</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -85,18 +86,17 @@ if (!isset($_SESSION['admin'])) {
                     <div class="dashboard-title p-2 text-center">Welcome to Dashboard</div>
                     <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, donations, volunteers, and more.</div>
                     <!-- Tabs -->
-                    <div class="dashboard-tabs-wrapper">
-                        <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="form-tab" data-bs-toggle="tab" data-bs-target="#pending_requests" type="button" role="tab">Registration Requests</button>
-                            </li>
-                        </ul>
-                    </div>
-
-
+                    <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="form-tab" data-bs-toggle="tab" data-bs-target="#form" type="button" role="tab"> Volunteers </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="table-tab" data-bs-toggle="tab" data-bs-target="#table" type="button" role="tab">Pending Requests</button>
+                        </li>
+                    </ul>
                     <div class="tab-content" id="dashboardTabsContent">
                         <!-- Overview Tab -->
                         <div class="tab-pane fade show active" id="overview" role="tabpanel">
@@ -113,13 +113,13 @@ if (!isset($_SESSION['admin'])) {
                                 <div class="col-md-4 mb-3">
                                     <div class="card text-center bg-success text-white h-100 shadow-sm">
                                         <div class="card-body">
-                                            <i class="ri-user-received-line mb-2" style="font-size:2rem;"></i>
+                                            <i class="ri-user-received-line mb-2"  style="font-size:2rem;"></i>
                                             <h4 class="card-title fw-bold">₹ 1,20,000</h4>
                                             <p class="card-text">Pending Requests</p>
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-md-4 mb-3">
                                     <div class="card text-center bg-success text-white h-100 shadow-sm">
                                         <div class="card-body">
@@ -131,42 +131,62 @@ if (!isset($_SESSION['admin'])) {
                                 </div>
                             </div>
                         </div>
-
-                        <!-- pending_requests Tab -->
-                        <div class="tab-pane fade" id="pending_requests" role="tabpane">
+                        <!-- Form Tab -->
+                        <div class="tab-pane fade" id="form" role="tabpanel">
+                            <form class="modern-form mt-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Project Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter project name" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select" required>
+                                            <option value="">Select category</option>
+                                            <option>Education</option>
+                                            <option>Health</option>
+                                            <option>Environment</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" rows="3" placeholder="Project description" required></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">End Date</label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-gradient w-100 mt-2">Add Project</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Table Tab -->
+                        <div class="tab-pane fade" id="table" role="tabpanel">
                             <div class="table-responsive mt-4">
                                 <table class="table table-green align-middle">
                                     <thead>
                                         <tr>
-                                            <th>Slno.</th>
-                                            <th>Registration Id</th>
-                                            <th>Name</th>
-                                            <th>Dob</th>
-                                            <th>Mobile</th>
-                                            <th>Email</th>
-                                            <th>State</th>
-                                            <th>District</th>
-                                            <th>Village</th>
-                                            <th>Block</th>
-                                            <th>Pin</th>
-                                            <th>Blood Group</th>
+                                            <th>#</th>
+                                            <th>Donor Name</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
+                                            <td>1</td>
+                                            <td>Rahul Sharma</td>
+                                            <td>₹5,000</td>
+                                            <td>2024-06-01</td>
+                                            <td><span class="badge bg-success">Approved</span></td>
                                             <td>
                                                 <div class="action-buttons">
                                                     <button class="btn btn-approve btn-sm"><i class="ri-check-line"></i> Approve</button>
