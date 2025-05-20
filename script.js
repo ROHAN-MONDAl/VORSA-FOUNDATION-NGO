@@ -278,7 +278,7 @@ $(document).ready(function () {
 
     if (!valid) {
       e.preventDefault(); // stop form submit
-      alert("Please enter correct infornation before submitting.");
+      alert("Please enter correct information before submitting.");
     }
   });
 

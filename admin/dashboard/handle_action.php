@@ -21,45 +21,67 @@ require 'vendor/phpmailer/phpmailer/src/SMTP.php';
  * @param string $date Registration date formatted
  * @param string $savePath Path to save the generated PDF
  */
-function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath)
+
+//  Create a function to generate the PDF certificate
+function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath, $alignment = 'center', $topPadding = 80)
 {
     require('fpdf/fpdf.php');
+
+    // Create landscape A4 PDF
     $pdf = new FPDF('L', 'mm', 'A4');
     $pdf->AddPage();
 
+    // Path to certificate background
     $backgroundPath = __DIR__ . '/certificate/certificate_bg.jpg';
 
-    // Check if certificate background image exists
+    // Show error if background image is missing
     if (!file_exists($backgroundPath)) {
         echo 'Certificate background image not found.';
         exit;
     }
 
-    // Add background image to PDF
+    // Add full-width background image
     $pdf->Image($backgroundPath, 0, 0, 297);
-    $pdf->SetFont('Arial', '', 16);
+
+    // Set default text color to black
     $pdf->SetTextColor(0, 0, 0);
 
-    // Prepare certificate text lines
+    // Map simple alignment to FPDF format
+    $alignMap = [
+        'left' => 'L',
+        'center' => 'C',
+        'right' => 'R'
+    ];
+    $fpdfAlign = isset($alignMap[$alignment]) ? $alignMap[$alignment] : 'C'; // default to center
+
+    // --- Certificate Lines (customize as needed) ---
     $lines = [
-        "This is to certify that $name,",
-        "residing at $address,",
-        "has been duly registered as a Volunteer with Voice of Rural Social Awareness (VORSA)",
-        "as of $date.",
-        "Volunteer ID: $volunteerId"
+        ["This is to certify that", 'Times', '', 16],
+        [$name, 'Times', 'BI', 24], // Bold Italic name
+        ["residing at $address,", 'Times', '', 16],
+        ["has been duly registered as a Volunteer", 'Times', '', 16],
+        ["with Voice of Rural Social Awareness (VORSA)", 'Times', 'B', 16], // Bold
+        ["as of $date.", 'Times', '', 16],
+        ["Volunteer ID: $volunteerId", 'Times', 'B', 14] // Bold
     ];
 
-    // Write each line to the PDF, centered
-    $y = 120;  // Starting Y position
+    // Start vertical position (top padding)
+    $currentY = $topPadding;
+
+    // Loop through lines and render text
     foreach ($lines as $line) {
-        $pdf->SetXY(10, $y);
-        $pdf->Cell(0, 10, $line, 0, 1, 'C');
-        $y += 12;
+        list($text, $fontFamily, $fontStyle, $fontSize) = $line;
+        $pdf->SetFont($fontFamily, $fontStyle, $fontSize);
+        $pdf->SetXY(10, $currentY);                      // X = 10mm left padding, Y = current line height
+        $pdf->Cell(0, 10, $text, 0, 1, $fpdfAlign);       // Full-width cell, align by user setting
+        $currentY += 10;                                  // Line spacing
     }
 
-    // Save the PDF file to disk
+    // Save the PDF to disk
     $pdf->Output('F', $savePath);
 }
+
+
 
 /**
  * Send volunteer certificate by email using PHPMailer.
@@ -87,7 +109,8 @@ function sendCertificateEmail($to, $name, $filePath)
 
         $mail->isHTML(true);
         $mail->Subject = 'Your Volunteer Certificate';
-        $mail->Body = "Dear $name,<br><br>Thank you for registering with VORSA. Your certificate is attached.";
+        $mail->Body = "Dear $name,<br><br>We appreciate your registration with the Voice of Rural Social Awareness (VORSA). 
+        Your certificate of recognition is attached for your records";
 
         $mail->send();  // Send the email
     } catch (Exception $e) {
@@ -178,13 +201,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Indicate successful approval
         echo 'approved';
         exit;
-
     } elseif ($action === 'reject') {
         // Delete registration entry on rejection
         mysqli_query($conn, "DELETE FROM registrations WHERE id = $id");
         echo 'rejected';
         exit;
-
     } else {
         echo 'Invalid action.';
         exit;

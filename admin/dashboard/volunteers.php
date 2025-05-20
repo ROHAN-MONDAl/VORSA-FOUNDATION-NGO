@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+// Include database connection and functions
+include('../../server.php');
 // Check if admin session exists
 if (!isset($_SESSION['admin'])) {
     // If no session but "remember me" cookie exists, create session from cookie
@@ -8,7 +9,7 @@ if (!isset($_SESSION['admin'])) {
         $_SESSION['admin'] = $_COOKIE['admin_remember'];
     } else {
         // Neither session nor cookie present, redirect to login
-        header("Location: ../index.php");
+        header("Location: dashboard.php");
         exit;
     }
 }
@@ -89,10 +90,16 @@ if (!isset($_SESSION['admin'])) {
                         <!-- Volunteers Tab -->
                         <div id="volunteers" role="tabpanel">
                             <div class="table-responsive mt-4">
+                                <?php
+                                // Fetch all volunteers
+                                $sql = "SELECT * FROM volunteers ORDER BY id DESC";
+                                $result = mysqli_query($conn, $sql);
+                                ?>
+
                                 <table class="table table-green align-middle">
                                     <thead>
                                         <tr>
-                                           <th>Slno.</th>
+                                            <th>Slno.</th>
                                             <th>Registration Id</th>
                                             <th>Name</th>
                                             <th>Dob</th>
@@ -104,35 +111,72 @@ if (!isset($_SESSION['admin'])) {
                                             <th>Block</th>
                                             <th>Pin</th>
                                             <th>Blood Group</th>
-                                            <th>Share</th>
+                                            <th>Certificate</th>
+                                            <th>Edit</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td class="text-wrap">1</td>
-                                            <td>
-                                                <div class="action-buttons">
-                                                    <button class="btn btn-approve btn-sm"><i class="ri-share-line"></i> Share </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="action-buttons">
-                                                    <button class="btn btn-danger btn-sm"><i class="ri-file-edit-line"></i> Edit</button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        $sl = 1;
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                        ?>
+                                                <tr>
+                                                    <td class="text-wrap"><?= $sl++ ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['registration_id']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['name']) ?></td>
+                                                    <td><?= htmlspecialchars($row['dob']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['mobile']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['email']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['state']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['district']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['village']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['block']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['pin']) ?></td>
+                                                    <td class="text-wrap"><?= htmlspecialchars($row['blood_group']) ?></td>
+                                                    <td>
+                                                        <div class="action-buttons">
+                                                            <!-- Download PDF button -->
+                                                            <a href="certificates/<?= htmlspecialchars($row['registration_id']) ?>.pdf"
+                                                                class="btn btn-primary btn-sm"
+                                                                download="<?= htmlspecialchars($row['registration_id']) ?>.pdf"
+                                                                title="Download Certificate PDF">
+                                                                <i class="ri-download-line"></i> Download PDF
+                                                            </a>
+                                                            <!-- WhatsApp Share button -->
+                                                            <!-- <?php
+                                                            $pdfUrl = urlencode('https://yourdomain.com/certificates/' . $row['registration_id'] . '.pdf');
+                                                            $whatsappMessage = urlencode("Check out my certificate: $pdfUrl");
+                                                            $whatsappShareUrl = "https://api.whatsapp.com/send?text=$whatsappMessage";
+                                                            ?>
+                                                            <a href="<?= $whatsappShareUrl ?>" target="_blank"
+                                                                class="btn btn-success btn-sm"
+                                                                title="Share on WhatsApp">
+                                                                <i class="ri-whatsapp-line"></i> Share on WhatsApp
+                                                            </a> -->
+                                                        </div>
+
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-sm" onclick="window.location.href='edit_folder/edit_Volunteers.php?registration_id=<?= $row['registration_id'] ?>'">
+                                                            <i class="ri-file-edit-line"></i> Edit
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger btn-sm" onclick="if(confirm('Are you sure you want to delete this volunteer?')) { window.location.href='edit_Folder/delete_volunteer.php?registration_id=<?= urlencode($row['registration_id']) ?>'; }">
+                                                            <i class="ri-delete-bin-line"></i> Delete
+                                                        </button>
+
+
+                                                    </td>
+                                                </tr>
+                                        <?php
+                                            }
+                                        } else {
+                                            echo '<tr><td colspan="14" class="text-center text-muted">No data found</td></tr>';
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>

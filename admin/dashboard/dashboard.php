@@ -13,6 +13,20 @@ if (!isset($_SESSION['admin'])) {
         exit;
     }
 }
+
+// Volunteers with certificate (approved)
+$volunteerCount = $conn->query("SELECT COUNT(*) AS total FROM volunteers WHERE certificate_path IS NOT NULL")->fetch_assoc()['total'];
+
+// Volunteers without certificate (pending)
+$pendingCount = $conn->query("SELECT COUNT(*) AS total FROM volunteers WHERE certificate_path IS NULL")->fetch_assoc()['total'];
+
+// Total certificates issued (same as volunteers with certificate)
+$certCount = $volunteerCount;
+
+// Total registration requests
+$totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fetch_assoc()['total'];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,36 +116,41 @@ if (!isset($_SESSION['admin'])) {
                         <!-- Overview Tab -->
                         <div class="tab-pane fade show active" id="overview" role="tabpanel">
                             <div class="row mt-4">
+                                <!-- Volunteers -->
                                 <div class="col-md-4 mb-3">
                                     <div class="card text-center bg-success text-white h-100 shadow-sm">
                                         <div class="card-body">
                                             <i class="ri-team-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">58</h4>
+                                            <h4 class="card-title fw-bold"><?= $volunteerCount ?></h4>
                                             <p class="card-text">Volunteers</p>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Pending Requests -->
                                 <div class="col-md-4 mb-3">
                                     <div class="card text-center bg-success text-white h-100 shadow-sm">
                                         <div class="card-body">
                                             <i class="ri-user-received-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">₹ 1,20,000</h4>
+                                            <h4 class="card-title fw-bold"><?= $totalRequests ?></h4>
                                             <p class="card-text">Pending Requests</p>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Certificates -->
                                 <div class="col-md-4 mb-3">
                                     <div class="card text-center bg-success text-white h-100 shadow-sm">
                                         <div class="card-body">
                                             <i class="ri-medal-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">12</h4>
-                                            <p class="card-text">Certificates</p>
+                                            <h4 class="card-title fw-bold"><?= $certCount ?></h4>
+                                            <p class="card-text">Certificates Issued</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- pending_requests Tab -->
                         <div class="tab-pane fade" id="pending_requests" role="tabpane">
@@ -168,9 +187,9 @@ if (!isset($_SESSION['admin'])) {
                                         ?>
                                                 <tr>
                                                     <td class="text-wrap"><?= $sl++ ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['registration_id']) ?></td>
+                                                    <td><?= htmlspecialchars($row['registration_id']) ?></td>
                                                     <td class="text-wrap"><?= htmlspecialchars($row['name']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['dob']) ?></td>
+                                                    <td><?= htmlspecialchars($row['dob']) ?></td>
                                                     <td class="text-wrap"><?= htmlspecialchars($row['mobile']) ?></td>
                                                     <td class="text-wrap"><?= htmlspecialchars($row['email']) ?></td>
                                                     <td class="text-wrap"><?= htmlspecialchars($row['state']) ?></td>

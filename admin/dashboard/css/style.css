@@ -371,34 +371,65 @@ body::before {
     background: linear-gradient(90deg, #22c55e 60%, #16a34a 100%);
 }
 
+
+
+
+
 /* Tables */
 .table-green {
     width: 100%;
-    max-width: 100%;
-    overflow: hidden;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(34, 197, 94, 0.07);
-    text-align: center;
+    /* Keep border-collapse separate for border-radius on the table */
     border-collapse: separate;
-    border-spacing: 0;
+    /* Explicitly set border-spacing to 0 to remove space between cells */
+    border-spacing: 0; 
 }
 
-/* Rounded corners for top-left and top-right */
-.table-green th:first-child {
+/* Wrapper for responsive table and scrollbars */
+.table-responsive-wrapper {
+    overflow: hidden; /* This is crucial for hiding content that goes beyond border-radius */
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 40vh;
+    border-radius: 12px; /* Apply border-radius to the wrapper for consistent corners */
+    /* Hide scrollbars for the wrapper */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
+}
+
+.table-responsive-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+/* Make table header sticky */
+.table-green thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #16a34a;
+    /* Ensure the sticky header background covers any potential underlying gaps */
+}
+
+/* Rounded corners for the overall table */
+/* These rules target the corners of the table *visual boundary* */
+.table-green thead tr:first-child th:first-child {
     border-top-left-radius: 12px;
+    /* Important: The background of the th/td should extend to the radius */
+    /* This might require background-clip if you see issues, but usually not with solid backgrounds */
 }
 
-.table-green th:last-child {
+.table-green thead tr:first-child th:last-child {
     border-top-right-radius: 12px;
 }
 
-/* Optional: Rounded bottom corners if your table has a `tfoot` or last row */
-.table-green tr:last-child td:first-child {
+.table-green tbody tr:last-child td:first-child {
     border-bottom-left-radius: 12px;
 }
 
-.table-green tr:last-child td:last-child {
+.table-green tbody tr:last-child td:last-child {
     border-bottom-right-radius: 12px;
 }
 
@@ -409,6 +440,9 @@ body::before {
     border: none;
     text-align: center;
     white-space: nowrap;
+    padding: 10px 15px;
+    /* Add border-bottom to th to visually separate header from body */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* A subtle border for separation */
 }
 
 /* Table cells */
@@ -417,7 +451,47 @@ body::before {
     color: #222;
     text-align: center;
     white-space: nowrap;
+    padding: 8px 15px;
+    /* Add a subtle border to the bottom of all but the last row's cells */
+    /* This helps create visual lines without actual gaps */
+    border-bottom: 1px solid #eee; 
 }
+
+/* Remove bottom border from cells in the last row to prevent double borders or cut-off corners */
+.table-green tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Style for the "No data found" cell to ensure it's centered and takes the full width */
+.table-green .no-data-message {
+    text-align: center;
+    font-style: italic;
+    color: #6c757d;
+    padding: 20px;
+    /* If 'no-data-message' is the only row, ensure its bottom corners are rounded */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom: none; /* Ensure no bottom border if this is the only row */
+}
+
+/* Specific styling to ensure rounded corners on cells that might otherwise be cut off */
+/* This is a bit more advanced and might be needed depending on the exact gap */
+.table-green tr:first-child th {
+    border-top: none; /* No top border for header cells (covered by sticky header background) */
+}
+
+.table-green tr th:last-child,
+.table-green tr td:last-child {
+    border-right: none; /* No right border for last column cells */
+}
+
+.table-green tr th:first-child,
+.table-green tr td:first-child {
+    border-left: none; /* No left border for first column cells */
+}
+
+
 
 /* Action buttons */
 .action-buttons {
@@ -526,38 +600,40 @@ body::before {
         /* Optional: fade out slightly */
     }
 
-.dashboard-tabs-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
+    .dashboard-tabs-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* Firefox */
+    }
 
-.dashboard-tabs-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
+    .dashboard-tabs-wrapper::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, Opera */
+    }
 
-.dashboard-tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  width: max-content;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-}
+    .dashboard-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        width: max-content;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+    }
 
-.dashboard-tabs .nav-item {
-  flex: 0 0 auto;
-}
+    .dashboard-tabs .nav-item {
+        flex: 0 0 auto;
+    }
 
-.dashboard-tabs .nav-link {
-  border-radius: 8px 8px 0 0;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.92rem;
-  white-space: nowrap;
-  min-width: 80px;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(34, 197, 94, 0.08);
-}
+    .dashboard-tabs .nav-link {
+        border-radius: 8px 8px 0 0;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.92rem;
+        white-space: nowrap;
+        min-width: 80px;
+        text-align: center;
+        box-shadow: 0 1px 4px rgba(34, 197, 94, 0.08);
+    }
 
 }
 
