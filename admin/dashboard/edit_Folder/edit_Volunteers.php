@@ -1,18 +1,7 @@
 <?php
-session_start();
-// Include database connection and functions
-include('../../../server.php');
-// Check if admin session exists
-if (!isset($_SESSION['admin'])) {
-    // If no session but "remember me" cookie exists, create session from cookie
-    if (isset($_COOKIE['admin_remember'])) {
-        $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    } else {
-        // Neither session nor cookie present, redirect to login
-        header("Location: ../dashboard.php");
-        exit;
-    }
-}
+
+include('../authentications/auth_check.php');
+
 
 if (!isset($_GET['registration_id'])) {
     die("Registration ID missing");
@@ -107,118 +96,112 @@ if (!$data) {
 
                         <!-- Volunteers Tab -->
                         <div id="volunteers" role="tabpanel">
-                            <div class="table-responsive mt-4">
-
-                                <div class="tab-pane" id="volunteer-form" role="tabpanel">
-                                    <!-- Your Form -->
-                                    <div class="container my-4">
-                                        <div class="form-container">
-                                            <?php
-                                            if (!empty($_SESSION['success_message'])) {
-                                                echo '<div class="alert alert-success text-center py-1 px-2 small" style="font-size: 0.875rem; margin: 10px auto; max-width: 300px; border-radius: 4px;">'
-                                                    . $_SESSION['success_message'] . '</div>';
-                                                unset($_SESSION['success_message']);
-                                            }
-
-                                            if (!empty($_SESSION['error_message'])) {
-                                                echo '<div class="alert alert-danger text-center py-1 px-2 small" style="font-size: 0.875rem; margin: 10px auto; max-width: 300px; border-radius: 4px;">'
-                                                    . $_SESSION['error_message'] . '</div>';
-                                                unset($_SESSION['error_message']);
-                                            }
-                                            ?>
-
-                                            <form action="update_volunteer.php" method="POST" class="modern-form mt-4 volunteer_form">
 
 
+                            <div class="tab-pane" id="volunteer-form" role="tabpanel">
+                                <!-- Your Form -->
+                                <div class="container my-4">
+                                    <div class="form-container">
+                                        <?php
+                                        if (!empty($_SESSION['success_message'])) {
+                                            echo '<div class="alert alert-success text-center py-1 px-2 small" style="font-size: 0.875rem; margin: 10px auto; max-width: 300px; border-radius: 4px;">'
+                                                . $_SESSION['success_message'] . '</div>';
+                                            unset($_SESSION['success_message']);
+                                        }
+
+                                        if (!empty($_SESSION['error_message'])) {
+                                            echo '<div class="alert alert-danger text-center py-1 px-2 small" style="font-size: 0.875rem; margin: 10px auto; max-width: 300px; border-radius: 4px;">'
+                                                . $_SESSION['error_message'] . '</div>';
+                                            unset($_SESSION['error_message']);
+                                        }
+                                        ?>
+
+                                        <form action="update_volunteer.php" method="POST" class="modern-form mt-4 volunteer_form">
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold h5">Registration ID</label>
+                                                <h3><?= htmlspecialchars($registration_id) ?></h3>
+                                                <input type="hidden" name="registration_id" value="<?= htmlspecialchars($registration_id) ?>">
+                                            </div>
 
 
-
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-bold h5">Registration ID</label>
-                                                    <h3><?= htmlspecialchars($registration_id) ?></h3>
-                                                    <input type="hidden" name="registration_id" value="<?= htmlspecialchars($registration_id) ?>">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="<?= htmlspecialchars($data['name']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Date of Birth</label>
+                                                    <input type="text" class="form-control" id="dob" name="dob" value="<?= htmlspecialchars($data['dob']) ?>" placeholder="DD-MM-YYYY" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Mobile Number</label>
+                                                    <input type="text" class="form-control" id="mob" name="mobile" value="<?= htmlspecialchars($data['mobile']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="mail" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">State</label>
+                                                    <select class="form-select" id="state" name="state" onchange="loadDistricts()" required>
+                                                        <option value="">Select your state</option>
+                                                        <!-- Dynamically loaded options via JS -->
+                                                        <option value="<?= htmlspecialchars($data['state']) ?>" selected><?= htmlspecialchars($data['state']) ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">District</label>
+                                                    <select class="form-select" id="district" name="district" required>
+                                                        <option value="<?= htmlspecialchars($data['district']) ?>" selected><?= htmlspecialchars($data['district']) ?></option>
+                                                        <!-- Dynamically loaded options -->
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Village Name</label>
+                                                    <input type="text" class="form-control" id="village" name="village" value="<?= htmlspecialchars($data['village']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Block No</label>
+                                                    <input type="text" class="form-control" id="block" name="block" value="<?= htmlspecialchars($data['block']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Pin Code</label>
+                                                    <input type="text" class="form-control" id="pin" name="pin" value="<?= htmlspecialchars($data['pin']) ?>" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Blood Group</label>
+                                                    <select class="form-select" id="blood" name="blood" required>
+                                                        <option value="">Select blood group</option>
+                                                        <?php
+                                                        $bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+                                                        foreach ($bloodGroups as $group) {
+                                                            $selected = ($data['blood_group'] === $group) ? 'selected' : '';
+                                                            echo "<option value=\"$group\" $selected>$group</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="volunteer" name="confirm" style="border-color: green;" required />
+                                                        <label class="form-check-label" for="volunteer">
+                                                            Are you sure you want to save?
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 d-flex justify-content-between mt-2">
+                                                    <a href="../volunteers.php" class="btn btn-sm me-2" style="background-color: #ffc107; color: #212529; font-size: 0.875rem;">
+                                                        &larr; Back
+                                                    </a>
+                                                    <button type="submit" class="btn btn-gradient btn-sm ms-2" style="font-size: 0.875rem;">
+                                                        <i class="ri-save-line"></i> Save
+                                                    </button>
                                                 </div>
 
 
-                                                <div class="row g-3">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Name</label>
-                                                        <input type="text" class="form-control" id="name" name="name" value="<?= htmlspecialchars($data['name']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Date of Birth</label>
-                                                        <input type="text" class="form-control" id="dob" name="dob" value="<?= htmlspecialchars($data['dob']) ?>" placeholder="DD-MM-YYYY" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Mobile Number</label>
-                                                        <input type="text" class="form-control" id="mob" name="mobile" value="<?= htmlspecialchars($data['mobile']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="email" class="form-control" id="mail" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">State</label>
-                                                        <select class="form-select" id="state" name="state" onchange="loadDistricts()" required>
-                                                            <option value="">Select your state</option>
-                                                            <!-- Dynamically loaded options via JS -->
-                                                            <option value="<?= htmlspecialchars($data['state']) ?>" selected><?= htmlspecialchars($data['state']) ?></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">District</label>
-                                                        <select class="form-select" id="district" name="district" required>
-                                                            <option value="<?= htmlspecialchars($data['district']) ?>" selected><?= htmlspecialchars($data['district']) ?></option>
-                                                            <!-- Dynamically loaded options -->
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Village Name</label>
-                                                        <input type="text" class="form-control" id="village" name="village" value="<?= htmlspecialchars($data['village']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Block No</label>
-                                                        <input type="text" class="form-control" id="block" name="block" value="<?= htmlspecialchars($data['block']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Pin Code</label>
-                                                        <input type="text" class="form-control" id="pin" name="pin" value="<?= htmlspecialchars($data['pin']) ?>" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Blood Group</label>
-                                                        <select class="form-select" id="blood" name="blood" required>
-                                                            <option value="">Select blood group</option>
-                                                            <?php
-                                                            $bloodGroups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
-                                                            foreach ($bloodGroups as $group) {
-                                                                $selected = ($data['blood_group'] === $group) ? 'selected' : '';
-                                                                echo "<option value=\"$group\" $selected>$group</option>";
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-center">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="volunteer" name="confirm" style="border-color: green;" required />
-                                                            <label class="form-check-label" for="volunteer">
-                                                                Are you sure you want to save?
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 d-flex justify-content-between mt-2">
-                                                        <a href="../volunteers.php" class="btn btn-sm me-2" style="background-color: #ffc107; color: #212529; font-size: 0.875rem;">
-                                                            &larr; Back
-                                                        </a>
-                                                        <button type="submit" class="btn btn-gradient btn-sm ms-2" style="font-size: 0.875rem;">
-                                                            Submit
-                                                        </button>
-                                                    </div>
-
-
-                                                </div>
-                                            </form>
-
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 

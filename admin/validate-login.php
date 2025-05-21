@@ -2,34 +2,27 @@
 session_start();
 include '../server.php'; // Your DB connection
 
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-}
-if (!isset($_SESSION['lock_time'])) {
-    $_SESSION['lock_time'] = 0;
-}
+if (!isset($_SESSION['login_attempts'])) $_SESSION['login_attempts'] = 0;
+if (!isset($_SESSION['lock_time'])) $_SESSION['lock_time'] = 0;
 
 $lockDuration = 180; // 3 minutes
 $currentTime = time();
 
-// Check if user is locked out
+// Lockout check
 if ($_SESSION['login_attempts'] >= 5) {
     $elapsed = $currentTime - $_SESSION['lock_time'];
-    
     if ($elapsed < $lockDuration) {
         $remaining = $lockDuration - $elapsed;
         $_SESSION['notification'] = "Too many failed attempts. Try again in " . ceil($remaining) . " seconds.";
         header("Location: index.php");
         exit;
     } else {
-        // Reset lockout
         $_SESSION['login_attempts'] = 0;
         $_SESSION['lock_time'] = 0;
         unset($_SESSION['notification']);
     }
 }
 
-// Only process login if not locked
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = trim($_POST['user_id']);
     $password = trim($_POST['password']);
@@ -54,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Validate credentials
+    // Fetch user from DB
     $stmt = $conn->prepare("SELECT * FROM admins WHERE user_id = ?");
     if (!$stmt) {
         $_SESSION['notification'] = "Database error.";
@@ -69,9 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
         $hashedPassword = $row['password'];
+        $admin_id = $row['id'];
 
         if (password_verify($password, $hashedPassword)) {
-            // Check again if user is still locked
+            // Still locked?
             if ($_SESSION['login_attempts'] >= 5 && (time() - $_SESSION['lock_time']) < $lockDuration) {
                 $remaining = $lockDuration - (time() - $_SESSION['lock_time']);
                 $_SESSION['notification'] = "You are still locked. Try again in " . ceil($remaining) . " seconds.";
@@ -80,22 +74,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Success login
-            $_SESSION['admin'] = $user_id;
+            $_SESSION['admin'] = $admin_id;
             $_SESSION['login_attempts'] = 0;
             $_SESSION['lock_time'] = 0;
             unset($_SESSION['notification']);
 
-            // Remember me
+            // Handle secure "remember me"
             if ($remember) {
-                setcookie('admin_remember', $user_id, time() + (86400 * 30), "/");
+                $token = bin2hex(random_bytes(32));
+                $stmt = $conn->prepare("UPDATE admins SET remember_token = ? WHERE id = ?");
+                $stmt->bind_param("si", $token, $admin_id);
+                $stmt->execute();
+
+                setcookie("admin_remember", $token, time() + (86400 * 30), "/", "", true, true); // Secure cookie
             } else {
-                setcookie('admin_remember', '', time() - 3600, "/");
+                setcookie("admin_remember", "", time() - 3600, "/", "", true, true); // Clear cookie
             }
 
             header("Location: dashboard/dashboard.php");
             exit;
         } else {
-            // Wrong password
             $_SESSION['login_attempts']++;
             if ($_SESSION['login_attempts'] >= 5) {
                 $_SESSION['lock_time'] = time();
@@ -113,10 +111,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Auto-login from cookie
+// AUTO-LOGIN FROM TOKEN COOKIE
 if (isset($_COOKIE['admin_remember']) && !isset($_SESSION['admin'])) {
-    $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    header("Location: dashboard/dashboard.php");
-    exit;
+    $token = $_COOKIE['admin_remember'];
+    $stmt = $conn->prepare("SELECT id FROM admins WHERE remember_token = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($admin_id);
+        $stmt->fetch();
+        $_SESSION['admin'] = $admin_id;
+        header("Location: dashboard/dashboard.php");
+        exit;
+    }
 }
 ?>

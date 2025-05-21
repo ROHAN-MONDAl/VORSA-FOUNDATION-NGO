@@ -1,18 +1,5 @@
 <?php
-session_start();
-// Include database connection and functions
-include('../../server.php');
-// Check if admin session exists
-if (!isset($_SESSION['admin'])) {
-    // If no session but "remember me" cookie exists, create session from cookie
-    if (isset($_COOKIE['admin_remember'])) {
-        $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    } else {
-        // Neither session nor cookie present, redirect to login
-        header("Location: dashboard.php");
-        exit;
-    }
-}
+ include('authentications/auth_check.php'); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +161,7 @@ if (!isset($_SESSION['admin'])) {
                                         <?php
                                             }
                                         } else {
-                                            echo '<tr><td colspan="14" class="text-center text-muted">No data found</td></tr>';
+                                            echo '<tr><td colspan="15" class="text-center text-muted">No data found</td></tr>';
                                         }
                                         ?>
                                     </tbody>

@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('../../../server.php'); // Adjust path if needed
+
+include('../authentications/auth_check.php'); // Adjust path if needed
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [

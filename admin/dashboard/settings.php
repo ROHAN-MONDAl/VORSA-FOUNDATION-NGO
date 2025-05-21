@@ -1,17 +1,13 @@
 <?php
-session_start();
+include('authentications/auth_check.php'); // DB connection + session
 
-// Check if admin session exists
-if (!isset($_SESSION['admin'])) {
-    // If no session but "remember me" cookie exists, create session from cookie
-    if (isset($_COOKIE['admin_remember'])) {
-        $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    } else {
-        // Neither session nor cookie present, redirect to login
-        header("Location: ../index.php");
-        exit;
-    }
-}
+// Fetch current admin details using ID
+$sql = "SELECT user_id, email, password FROM admins WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $session_admin_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$data = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +17,7 @@ if (!isset($_SESSION['admin'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Business Dashboard</title>
     <!-- favicon -->
-     <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <!-- Remix Icon -->
@@ -47,9 +43,8 @@ if (!isset($_SESSION['admin'])) {
                 <div class="brand-name">Vorsa Foundation</div>
             </div>
             <nav class="sidebar-nav mt-4">
-                <a class="nav-link active" href="#" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
-                <a class="nav-link" href="#" data-menu="projects"><i class="ri-team-line"></i> Voluteers </a>
-                <a class="nav-link" href="#" data-menu="donations"><i class="ri-hand-heart-line"></i> Certificates</a>
+                <a class="nav-link active" href="dashboard.php" data-menu="dashboard"><i class="ri-dashboard-line"></i> Dashboard</a>
+                <a class="nav-link" href="volunteers.php" data-menu="projects"><i class="ri-team-line"></i> Volunteers </a>
             </nav>
         </div>
         <!-- Page Content -->
@@ -70,7 +65,7 @@ if (!isset($_SESSION['admin'])) {
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center" style="margin-left:2%;">
                             <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="profileDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="ri-settings-3-line me-2"></i>Settings</a></li>
+                                <li><a class="dropdown-item" href="settings.php"><i class="ri-settings-3-line me-2"></i>Settings</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -83,126 +78,59 @@ if (!isset($_SESSION['admin'])) {
             <!-- Main Content -->
             <div class="container-fluid">
                 <div class="dashboard-card">
-                    <div class="dashboard-title p-2 text-center">Welcome to Dashboard</div>
-                    <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, donations, volunteers, and more.</div>
-                    <!-- Tabs -->
-                    <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Overview</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="form-tab" data-bs-toggle="tab" data-bs-target="#form" type="button" role="tab"> Volunteers </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="table-tab" data-bs-toggle="tab" data-bs-target="#table" type="button" role="tab">Pending Requests</button>
-                        </li>
-                    </ul>
+                    <div class="dashboard-title p-2 text-center">
+                        <h1>Settings</h1>
+                    </div>
                     <div class="tab-content" id="dashboardTabsContent">
-                        <!-- Overview Tab -->
-                        <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                            <div class="row mt-4">
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-team-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">58</h4>
-                                            <p class="card-text">Volunteers</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-user-received-line mb-2"  style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">₹ 1,20,000</h4>
-                                            <p class="card-text">Pending Requests</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-medal-line mb-2" style="font-size:2rem;"></i>
-                                            <h4 class="card-title fw-bold">12</h4>
-                                            <p class="card-text">Certificates</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <h2>Update Admin Details</h2>
+
+                        <!-- Notifications -->
+                        <?php if (isset($_SESSION['admin_message'])): ?>
+                            <div class="alert alert-<?= $_SESSION['admin_message_type'] ?? 'info' ?>" role="alert" style="margin-bottom:20px;">
+                                <?= htmlspecialchars($_SESSION['admin_message']); ?>
                             </div>
-                        </div>
-                        <!-- Form Tab -->
-                        <div class="tab-pane fade" id="form" role="tabpanel">
-                            <form class="modern-form mt-4">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Project Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter project name" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Category</label>
-                                        <select class="form-select" required>
-                                            <option value="">Select category</option>
-                                            <option>Education</option>
-                                            <option>Health</option>
-                                            <option>Environment</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label class="form-label">Description</label>
-                                        <textarea class="form-control" rows="3" placeholder="Project description" required></textarea>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Start Date</label>
-                                        <input type="date" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">End Date</label>
-                                        <input type="date" class="form-control" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-gradient w-100 mt-2">Add Project</button>
-                                    </div>
+                            <?php
+                            // Clear message after showing
+                            unset($_SESSION['admin_message'], $_SESSION['admin_message_type']);
+                            ?>
+                        <?php endif; ?>
+
+                        <?php if ($data): ?>
+                            <form action="edit_Folder/update_admin.php" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label">User ID</label>
+                                    <input type="text" class="form-control" name="user_id" value="<?= htmlspecialchars($data['user_id']) ?>" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="text" class="form-control" name="password" value="" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Admin</button>
                             </form>
-                        </div>
-                        <!-- Table Tab -->
-                        <div class="tab-pane fade" id="table" role="tabpanel">
-                            <div class="table-responsive mt-4">
-                                <table class="table table-green align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Donor Name</th>
-                                            <th>Amount</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Rahul Sharma</td>
-                                            <td>₹5,000</td>
-                                            <td>2024-06-01</td>
-                                            <td><span class="badge bg-success">Approved</span></td>
-                                            <td>
-                                                <div class="action-buttons">
-                                                    <button class="btn btn-approve btn-sm"><i class="ri-check-line"></i> Approve</button>
-                                                    <button class="btn btn-reject btn-sm"><i class="ri-close-line"></i> Reject</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <?php else: ?>
+                            <div class="alert alert-danger">Admin record not found.</div>
+                        <?php endif; ?>
+
+                        <script>
+                            document.getElementById('adminForm').addEventListener('submit', function(e) {
+                                const password = document.querySelector('input[name="password"]').value;
+
+                                if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[^a-zA-Z0-9]/.test(password)) {
+                                    alert("Password must contain at least one uppercase letter, one lowercase letter, and one special character.");
+                                    e.preventDefault();
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
-            <!-- End Main Content -->
         </div>
+        <!-- End Main Content -->
+    </div>
     </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

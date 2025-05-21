@@ -1,16 +1,16 @@
 <?php
 session_start();
+include('../../server.php');
 
-// Clear session data
-$_SESSION = [];
-session_destroy();
-
-// Clear remember me cookie if exists
-if (isset($_COOKIE['admin_remember'])) {
-    setcookie('admin_remember', '', time() - 3600, "/");
+if (isset($_SESSION['admin'])) {
+    $stmt = $conn->prepare("UPDATE admins SET remember_token = NULL WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['admin']);
+    $stmt->execute();
 }
 
-// Redirect to login page
+session_unset();
+session_destroy();
+setcookie("admin_remember", "", time() - 3600, "/", "", true, true);
+
 header("Location: ../index.php");
 exit;
-?>

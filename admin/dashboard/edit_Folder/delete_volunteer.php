@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('../../../server.php'); // Adjust the path as needed
+
+include('../authentications/auth_check.php'); // Your DB connection
 
 if (isset($_GET['registration_id'])) {
     $registration_id = $_GET['registration_id'];

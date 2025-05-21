@@ -1,18 +1,7 @@
 <?php
-session_start();
-// Include database connection and functions
-include('../../server.php');
-// Check if admin session exists
-if (!isset($_SESSION['admin'])) {
-    // If no session but "remember me" cookie exists, create session from cookie
-    if (isset($_COOKIE['admin_remember'])) {
-        $_SESSION['admin'] = $_COOKIE['admin_remember'];
-    } else {
-        // Neither session nor cookie present, redirect to login
-        header("Location: ../index.php");
-        exit;
-    }
-}
+
+ include('authentications/auth_check.php');
+
 
 // Volunteers with certificate (approved)
 $volunteerCount = $conn->query("SELECT COUNT(*) AS total FROM volunteers WHERE certificate_path IS NOT NULL")->fetch_assoc()['total'];
@@ -118,9 +107,9 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
                             <div class="row mt-4">
                                 <!-- Volunteers -->
                                 <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-team-line mb-2" style="font-size:2rem;"></i>
+                                    <div class="card custom-card h-100 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <i class="ri-team-line mb-2"></i>
                                             <h4 class="card-title fw-bold"><?= $volunteerCount ?></h4>
                                             <p class="card-text">Volunteers</p>
                                         </div>
@@ -129,9 +118,9 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
 
                                 <!-- Pending Requests -->
                                 <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-user-received-line mb-2" style="font-size:2rem;"></i>
+                                    <div class="card custom-card h-100 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <i class="ri-user-received-line mb-2"></i>
                                             <h4 class="card-title fw-bold"><?= $totalRequests ?></h4>
                                             <p class="card-text">Pending Requests</p>
                                         </div>
@@ -140,9 +129,9 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
 
                                 <!-- Certificates -->
                                 <div class="col-md-4 mb-3">
-                                    <div class="card text-center bg-success text-white h-100 shadow-sm">
-                                        <div class="card-body">
-                                            <i class="ri-medal-line mb-2" style="font-size:2rem;"></i>
+                                    <div class="card custom-card h-100 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <i class="ri-medal-line mb-2"></i>
                                             <h4 class="card-title fw-bold"><?= $certCount ?></h4>
                                             <p class="card-text">Certificates Issued</p>
                                         </div>
@@ -150,10 +139,13 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
-                        <!-- pending_requests Tab -->
-                        <div class="tab-pane fade" id="pending_requests" role="tabpane">
+
+                    <!-- pending_requests Tab -->
+                    <div class="tab-pane fade" id="pending_requests" role="tabpane">
+                        <div class="table-responsive-wrapper">
                             <div class="table-responsive mt-4">
                                 <?php
                                 // Fetch all registrations
@@ -200,28 +192,35 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
                                                     <td class="text-wrap"><?= htmlspecialchars($row['blood_group']) ?></td>
                                                     <td>
                                                         <div class="d-grid gap-2 d-md-flex">
-                                                            <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['id'] ?>">Approve</button>
-                                                            <button class="btn btn-danger btn-sm reject-btn" data-id="<?= $row['id'] ?>">Reject</button>
+                                                            <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['id'] ?>">
+                                                                <i class="ri-checkbox-circle-line me-1"></i> Approve
+                                                            </button>
+                                                            <button class="btn btn-danger btn-sm reject-btn" data-id="<?= $row['id'] ?>">
+                                                                <i class="ri-close-circle-line me-1"></i> Reject
+                                                            </button>
                                                         </div>
+
 
                                                     </td>
                                                 </tr>
                                         <?php
                                             }
                                         } else {
-                                            echo '<tr><td colspan="13" class="text-center text-muted">No data found</td></tr>';
+                                            echo '<tr><td colspan="15" class="text-center text-muted">No data found</td></tr>';
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-            <!-- End Main Content -->
-            <!-- Loader (centered with spinner) -->
-            <div id="loading-screen" style="
+        </div>
+        <!-- End Main Content -->
+        <!-- Loader (centered with spinner) -->
+        <div id="loading-screen" style="
     display: none;
     position: fixed;
     top: 0; left: 0;
@@ -233,21 +232,21 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
     justify-content: center;
     align-items: center;
 ">
-                <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+            <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
             </div>
-
-
-
-
-
-
         </div>
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="js/script.js"></script>
+
+
+
+
+
+
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 
