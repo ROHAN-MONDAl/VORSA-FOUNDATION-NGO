@@ -1,6 +1,6 @@
 <?php
 function generateCertificate($name, $address, $volunteerId, $date, $savePath) {
-    $template = 'WhatsApp Image 2025-05-16 at 16.15.46_eff60b21.jpg'; // certificate background
+    $template = 'vorsafoundation.png'; // certificate background
     $image = imagecreatefromjpeg($template);
 
     $text = "This is to certify that $name, residing at $address,\n"

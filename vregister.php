@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail->Port = 587;
     $mail->SMTPAuth = true;
     $mail->Username = 'codecomettechnology@gmail.com';
-    $mail->Password = 'nqqt ncdb ixbl uobl'; // Use your app password
+    $mail->Password = 'uons ghbx ieri vchm'; // Use your app password
     $mail->SMTPSecure = 'tls';
     $mail->setFrom('codecomettechnology@gmail.com', 'Vorsha Foundation');
     $mail->addAddress($email);
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$mail->send()) {
         showPopup("Failed to send OTP email.");
     } else {
-        header("Location: index.php?otp=1");
+        header("Location: vindex.php?otp=1");
         exit();
     }
 }

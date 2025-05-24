@@ -30,7 +30,7 @@ if (mysqli_num_rows($query) == 1) {
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'codecomettechnology@gmail.com';      // Your Gmail address
-    $mail->Password   = 'nqqt ncdb ixbl uobl';                  // Your Gmail app password or real password if less secure apps enabled
+    $mail->Password   = 'uons ghbx ieri vchm';                  // Your Gmail app password or real password if less secure apps enabled
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;       // Enable TLS encryption
     $mail->Port       = 587;
 

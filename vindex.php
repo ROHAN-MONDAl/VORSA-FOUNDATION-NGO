@@ -23,7 +23,7 @@
 
             <h3 class="text-center mt-4 mb-4 heading_form_name"><strong>Volunteer Registration Form</strong></h3>
 
-            <form class="volunteer_form" method="POST" action="register.php">
+            <form class="volunteer_form" method="POST" action="vregister.php">
 
                 <!-- Name -->
                 <div class="mb-3">
@@ -116,12 +116,11 @@
                 </div>
 
                 <div style="text-align: center;">
-                    <div style="display: inline-block; transform: scale(0.85);">
+                    <div style="display: inline-block; transform: scale(0.85);margin-left:-17px;">
                         <!-- reCAPTCHA widget -->
                         <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                     </div>
-                </div>
-
+ </div>
                 <!-- Submit Button -->
                 <div>
                     <button type="submit" class="full-width-btn">Submit</button>

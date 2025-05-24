@@ -1,5 +1,5 @@
 <?php
- include('authentications/auth_check.php'); 
+include('authentications/auth_check.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -76,6 +76,24 @@
 
                         <!-- Volunteers Tab -->
                         <div id="volunteers" role="tabpanel">
+
+                            <!-- Search bar -->
+                            <div class="container-fluid">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 col-lg-4"> <!-- 12 columns on mobile, 4/12 (≈33%) on large screens -->
+                                        <form class="w-100">
+                                            <div class="input-group input-group-md" style="border:1px solid #ced4da; border-radius:50rem; overflow:hidden;">
+                                                <span class="input-group-text bg-white border-0">
+                                                    <i class="ri-search-line"></i>
+                                                </span>
+                                                <input type="text" class="form-control form-control-md border-0 ps-2" id="volunteerSearch" placeholder="Search volunteers..." aria-label="Search volunteers">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="table-responsive mt-4">
                                 <?php
                                 // Fetch all volunteers
@@ -133,10 +151,10 @@
                                                             </a>
                                                             <!-- WhatsApp Share button -->
                                                             <!-- <?php
-                                                            $pdfUrl = urlencode('https://yourdomain.com/certificates/' . $row['registration_id'] . '.pdf');
-                                                            $whatsappMessage = urlencode("Check out my certificate: $pdfUrl");
-                                                            $whatsappShareUrl = "https://api.whatsapp.com/send?text=$whatsappMessage";
-                                                            ?>
+                                                                    $pdfUrl = urlencode('https://yourdomain.com/certificates/' . $row['registration_id'] . '.pdf');
+                                                                    $whatsappMessage = urlencode("Check out my certificate: $pdfUrl");
+                                                                    $whatsappShareUrl = "https://api.whatsapp.com/send?text=$whatsappMessage";
+                                                                    ?>
                                                             <a href="<?= $whatsappShareUrl ?>" target="_blank"
                                                                 class="btn btn-success btn-sm"
                                                                 title="Share on WhatsApp">
@@ -146,7 +164,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-primary btn-sm" onclick="window.location.href='edit_folder/edit_Volunteers.php?registration_id=<?= $row['registration_id'] ?>'">
+                                                        <button class="btn btn-primary btn-sm" onclick="window.location.href='edit_Folder/edit_Volunteers.php?registration_id=<?= $row['registration_id'] ?>'">
                                                             <i class="ri-file-edit-line"></i> Edit
                                                         </button>
                                                     </td>
@@ -166,6 +184,7 @@
                                         ?>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -176,7 +195,7 @@
     </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 

@@ -1,6 +1,6 @@
 <?php
 
- include('authentications/auth_check.php');
+include('authentications/auth_check.php');
 
 
 // Volunteers with certificate (approved)
@@ -87,7 +87,7 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
             <div class="container-fluid">
                 <div class="dashboard-card">
                     <div class="dashboard-title p-2 text-center">Welcome to Dashboard</div>
-                    <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, donations, volunteers, and more.</div>
+                    <div class="dashboard-desc mb-4 p-2 text-center">Manage your NGO activities, volunteers, and more.</div>
                     <!-- Tabs -->
                     <div class="dashboard-tabs-wrapper">
                         <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
@@ -198,6 +198,8 @@ $totalRequests = $conn->query("SELECT COUNT(*) AS total FROM registrations")->fe
                                                             <button class="btn btn-danger btn-sm reject-btn" data-id="<?= $row['id'] ?>">
                                                                 <i class="ri-close-circle-line me-1"></i> Reject
                                                             </button>
+
+
                                                         </div>
 
 

@@ -3,7 +3,7 @@ session_start();
 require 'server.php';
 
 if (!isset($_GET['code'], $_SESSION['otp'], $_SESSION['form_data'])) {
-    echo "<script>alert('Invalid OTP process.');window.location='index.php';</script>";
+    echo "<script>alert('Invalid OTP process.');window.location='vindex.php';</script>";
     exit;
 }
 
@@ -27,5 +27,5 @@ $stmt->close();
 unset($_SESSION['otp']);
 unset($_SESSION['form_data']);
 
-header("Location: index.php?msg=success&id=" . urlencode($data['registration_id']));
+header("Location: vindex.php?msg=success&id=" . urlencode($data['registration_id']));
 exit();

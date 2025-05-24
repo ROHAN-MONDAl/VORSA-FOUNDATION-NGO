@@ -42,7 +42,8 @@ if (isset($_SESSION['otp']) && $_SESSION['otp'] == $enteredOtp) {
   If you did not request this information, please notify us immediately.
 
   Best regards,
-  Vorsha Foundation IT Support";
+  Web2infinity IT Support
+  www.web2infinity.com";
 
   $mail = new PHPMailer(true);
 
@@ -52,7 +53,7 @@ if (isset($_SESSION['otp']) && $_SESSION['otp'] == $enteredOtp) {
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'codecomettechnology@gmail.com';      // Your Gmail
-    $mail->Password   = 'nqqt ncdb ixbl uobl';                // App Password
+    $mail->Password   = 'uons ghbx ieri vchm';                // App Password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 

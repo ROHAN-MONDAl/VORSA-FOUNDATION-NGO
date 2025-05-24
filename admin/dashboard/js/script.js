@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     const $sidebar = $('#sidebar-wrapper');
     const $loadingScreen = $('#loading-screen');  // Cache the loading screen div
@@ -37,6 +38,13 @@ $(document).ready(function () {
         const id = $button.data('id'); // ID of the registration row
         const action = $button.hasClass('approve-btn') ? 'approve' : 'reject'; // Determine action type
 
+        // Confirm only for reject
+        if (action === 'reject') {
+            if (!confirm('Are you sure to reject?')) {
+                return; // Cancel clicked, stop here
+            }
+        }
+
         showLoading(); // Show loader before AJAX call
 
         $.ajax({
@@ -58,25 +66,40 @@ $(document).ready(function () {
                             $tbody.append('<tr><td colspan="13" class="text-center text-muted">No data found</td></tr>');
                         }
                     });
-
                 } else if (response === 'duplicate') {
-                    // Duplicate volunteer detected
                     alert('Duplicate volunteer entry detected. Redirecting to dashboard.');
                     window.location.href = 'dashboard.php';
-
                 } else {
-                    // Any other error response
                     alert('Error: ' + response);
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                hideLoading(); // Hide loader if error occurs
-                console.error('AJAX error:', textStatus, errorThrown);
+            error: function () {
+                hideLoading();
                 alert('Server error occurred. Please try again.');
             }
         });
     });
 
+
+
+
     // --- Hide loader on initial page load (if it was accidentally shown) ---
     hideLoading();
 });
+
+
+
+// --- Volunteers search bar ---
+document.getElementById('volunteerSearch').addEventListener('input', function () {
+    const filter = this.value.toLowerCase();
+    const table = document.querySelector('#volunteers table tbody');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let row of rows) {
+        let text = row.textContent.toLowerCase();
+        row.style.display = text.includes(filter) ? '' : 'none';
+    }
+});
+
+
+

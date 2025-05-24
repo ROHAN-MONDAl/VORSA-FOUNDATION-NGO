@@ -7,10 +7,10 @@ function sendCertificateEmail($to, $name, $certificatePath) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.example.com'; // change this
+        $mail->Host = 'smtp.gmail.com'; // change this
         $mail->SMTPAuth = true;
         $mail->Username = 'codecomettechnology@gmail.com';
-        $mail->Password = 'nqqt ncdb ixbl uobl';
+        $mail->Password = 'uons ghbx ieri vchm';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 

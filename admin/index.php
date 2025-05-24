@@ -30,7 +30,7 @@ session_start();
             <div class="container-fluid d-flex justify-content-between align-items-center">
 
                 <!-- Hamburger button -->
-                <button
+                <!-- <button
                     class="navbar-toggler"
                     type="button"
                     data-bs-toggle="offcanvas"
@@ -41,7 +41,7 @@ session_start();
                     onfocus="this.style.outline='none'; this.style.boxShadow='none';"
                     onblur="this.style.outline=''; this.style.boxShadow='';">
                     <i class="ri-menu-2-line" style="font-size: 1.5rem; color: #fff;"></i>
-                </button>
+                </button> -->
 
 
                 <!-- Logo + Brand -->
@@ -71,7 +71,7 @@ session_start();
             </div>
 
             <!-- Mobile Offcanvas Menu -->
-            <div
+            <!-- <div
                 class="offcanvas offcanvas-start d-lg-none" style="background-color: #008000;"
                 tabindex="-1"
                 id="mobileMenu"
@@ -93,7 +93,7 @@ session_start();
                         <li class="nav-item"><a class="nav-link text-white" href="#">Settings</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> -->
 
         </nav>
 
@@ -141,6 +141,7 @@ session_start();
                     <button type="submit" class="btn btn-success w-100">Login</button>
                 </form>
             </div>
+            
         </div>
 
         <!-- Footer -->

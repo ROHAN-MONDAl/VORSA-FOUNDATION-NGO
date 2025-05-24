@@ -23,63 +23,58 @@ require 'vendor/phpmailer/phpmailer/src/SMTP.php';
  */
 
 //  Create a function to generate the PDF certificate
-function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath, $alignment = 'center', $topPadding = 80)
+function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath, $alignment = 'center', $topPadding = 70)
 {
     require('fpdf/fpdf.php');
 
-    // Create landscape A4 PDF
     $pdf = new FPDF('L', 'mm', 'A4');
     $pdf->AddPage();
 
-    // Path to certificate background
-    $backgroundPath = __DIR__ . '/certificate/certificate_bg.jpg';
+    // Add Poppins fonts (make sure these files exist in your font folder)
+    $pdf->AddFont('Poppins', '', 'Poppins-Regular.php');
+    $pdf->AddFont('Poppins', 'B', 'Poppins-Bold.php');
+    $pdf->AddFont('Poppins', 'I', 'Poppins-Italic.php');
+    $pdf->AddFont('Poppins', 'BI', 'Poppins-BoldItalic.php');
 
-    // Show error if background image is missing
+    $backgroundPath = __DIR__ . '/certificate/vorsafoundation.png';
     if (!file_exists($backgroundPath)) {
         echo 'Certificate background image not found.';
         exit;
     }
 
-    // Add full-width background image
     $pdf->Image($backgroundPath, 0, 0, 297);
 
-    // Set default text color to black
     $pdf->SetTextColor(0, 0, 0);
 
-    // Map simple alignment to FPDF format
     $alignMap = [
         'left' => 'L',
         'center' => 'C',
         'right' => 'R'
     ];
-    $fpdfAlign = isset($alignMap[$alignment]) ? $alignMap[$alignment] : 'C'; // default to center
+    $fpdfAlign = $alignMap[$alignment] ?? 'C';
 
-    // --- Certificate Lines (customize as needed) ---
     $lines = [
-        ["This is to certify that", 'Times', '', 16],
-        [$name, 'Times', 'BI', 24], // Bold Italic name
-        ["residing at $address,", 'Times', '', 16],
-        ["has been duly registered as a Volunteer", 'Times', '', 16],
-        ["with Voice of Rural Social Awareness (VORSA)", 'Times', 'B', 16], // Bold
-        ["as of $date.", 'Times', '', 16],
-        ["Volunteer ID: $volunteerId", 'Times', 'B', 14] // Bold
+        ["This is to proudly certify that", 'Poppins', '', 16],
+        [$name, 'Poppins', 'BI', 24], // Bold Italic name
+        // ["residing at $address,", 'Poppins', '', 16],
+        ["has registered as a Volunteer with", 'Poppins', '', 16],
+        ["with Voice of Rural Social Awareness (VORSA)", 'Poppins', 'B', 16],
+        ["as of $date.", 'Poppins', '', 16],
+        ["Volunteer ID: $volunteerId", 'Poppins', 'B', 14]
     ];
 
-    // Start vertical position (top padding)
     $currentY = $topPadding;
-
-    // Loop through lines and render text
     foreach ($lines as $line) {
         list($text, $fontFamily, $fontStyle, $fontSize) = $line;
         $pdf->SetFont($fontFamily, $fontStyle, $fontSize);
-        $pdf->SetXY(10, $currentY);                      // X = 10mm left padding, Y = current line height
-        $pdf->Cell(0, 10, $text, 0, 1, $fpdfAlign);       // Full-width cell, align by user setting
-        $currentY += 10;                                  // Line spacing
+        $pdf->SetXY(10, $currentY);
+        $pdf->Cell(0, 10, $text, 0, 1, $fpdfAlign);
+        $currentY += 10;
     }
 
-    // Save the PDF to disk
     $pdf->Output('F', $savePath);
 }
+
 
 
 
@@ -99,7 +94,7 @@ function sendCertificateEmail($to, $name, $filePath)
         $mail->Host = 'smtp.gmail.com';           // SMTP server
         $mail->SMTPAuth = true;                    // Enable SMTP authentication
         $mail->Username = 'codecomettechnology@gmail.com';  // SMTP username
-        $mail->Password = 'nqqt ncdb ixbl uobl';            // SMTP password (use app password)
+        $mail->Password = 'uons ghbx ieri vchm';            // SMTP password (use app password)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
         $mail->Port = 587;
 

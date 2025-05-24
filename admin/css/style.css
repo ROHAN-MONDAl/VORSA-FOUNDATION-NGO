@@ -35,7 +35,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url('https://www.dailypioneer.com/uploads/2017/story/images/big/191286_1.jpg') no-repeat center center fixed;
+  background: url('../images/ngobg.jpg') no-repeat center center fixed;
   background-size: cover;
   opacity: 0;
   transition: opacity 1s ease;
@@ -389,6 +389,7 @@ button:hover {
   padding: 12px;
   font-size: 14px;
   position: relative;
+  padding: 30px;
   width: 100%;
   margin-top: 40px;
 }

@@ -82,35 +82,60 @@ $data = $result->fetch_assoc();
                         <h1>Settings</h1>
                     </div>
                     <div class="tab-content" id="dashboardTabsContent">
-                        <h2>Update Admin Details</h2>
 
                         <!-- Notifications -->
-                        <?php if (isset($_SESSION['admin_message'])): ?>
-                            <div class="alert alert-<?= $_SESSION['admin_message_type'] ?? 'info' ?>" role="alert" style="margin-bottom:20px;">
-                                <?= htmlspecialchars($_SESSION['admin_message']); ?>
-                            </div>
-                            <?php
-                            // Clear message after showing
-                            unset($_SESSION['admin_message'], $_SESSION['admin_message_type']);
-                            ?>
-                        <?php endif; ?>
+
 
                         <?php if ($data): ?>
-                            <form action="edit_Folder/update_admin.php" method="POST">
-                                <div class="mb-3">
-                                    <label class="form-label">User ID</label>
-                                    <input type="text" class="form-control" name="user_id" value="<?= htmlspecialchars($data['user_id']) ?>" required>
+                            <div class="container mt-4">
+                                <div class="card shadow-sm rounded-4">
+                                    <div class="card-header bg-success text-white rounded-top-4">
+                                        <h5 class="mb-0">Update Admin Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3><?= htmlspecialchars($data['user_id']) ?></h3>
+                                        <?php if (isset($_SESSION['admin_message'])): ?>
+                                            <div class="alert alert-<?= $_SESSION['admin_message_type'] ?? 'info' ?>" role="alert" style="margin-bottom:20px;">
+                                                <?= htmlspecialchars($_SESSION['admin_message']); ?>
+                                            </div>
+                                            <?php
+                                            // Clear message after showing
+                                            unset($_SESSION['admin_message'], $_SESSION['admin_message_type']);
+                                            ?>
+                                        <?php endif; ?>
+                                        <form action="edit_Folder/update_admin.php" method="POST" class="modern-form mt-4 admin_form">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-bold h5">User ID</label>
+
+                                                <input type="text" class="form-control" name="user_id" value="<?= htmlspecialchars($data['user_id']) ?>">
+                                            </div>
+
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Password</label>
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter new password" required>
+                                                </div>
+
+                                                <div class="col-12 d-flex justify-content-between mt-2">
+                                                    <a href="dashboard.php" class="btn btn-sm me-2 fw-bold" style="background-color: #ffc107; color: #212529; font-size: 0.875rem;">
+                                                        &larr; Back
+                                                    </a>
+                                                    <button type="submit" class="btn btn-success btn-sm ms-2" style="font-size: 0.875rem;">
+                                                        <i class="ri-save-line"></i> Update Admin
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($data['email']) ?>" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Password</label>
-                                    <input type="text" class="form-control" name="password" value="" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Update Admin</button>
-                            </form>
+                            </div>
+
                         <?php else: ?>
                             <div class="alert alert-danger">Admin record not found.</div>
                         <?php endif; ?>
