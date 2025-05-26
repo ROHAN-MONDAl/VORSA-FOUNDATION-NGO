@@ -143,12 +143,12 @@ include('authentications/auth_check.php');
                                                     <td>
                                                         <div class="action-buttons">
                                                             <!-- Download PDF button -->
-                                                            <a href="certificates/<?= htmlspecialchars($row['registration_id']) ?>.pdf"
+                                                            <a href="generate_certificate.php?registration_id=<?= urlencode($row['registration_id']) ?>" target="_blank"
                                                                 class="btn btn-primary btn-sm"
-                                                                download="<?= htmlspecialchars($row['registration_id']) ?>.pdf"
                                                                 title="Download Certificate PDF">
                                                                 <i class="ri-download-line"></i> Download PDF
                                                             </a>
+
                                                             <!-- WhatsApp Share button -->
                                                             <!-- <?php
                                                                     $pdfUrl = urlencode('https://yourdomain.com/certificates/' . $row['registration_id'] . '.pdf');

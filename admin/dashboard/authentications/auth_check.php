@@ -1,10 +1,4 @@
 <?php
-// Session lifetime: 10 seconds
-ini_set('session.gc_maxlifetime', 28800 );// 8 hours × 60 minutes × 60 seconds
-
-ini_set('session.cookie_lifetime', 28800 );// 8 hours × 60 minutes × 60 seconds
-
-session_start();
 
 // DB connection
 $conn = new mysqli("localhost", "root", "", "vorsha_ngo");
@@ -12,10 +6,17 @@ if ($conn->connect_error) {
     showPopup("Database connection failed.");
 }
 
+// Session lifetime: 10 seconds
+ini_set('session.gc_maxlifetime', 28800); // 8 hours × 60 minutes × 60 seconds
+
+ini_set('session.cookie_lifetime', 28800); // 8 hours × 60 minutes × 60 seconds
+
+session_start();
 
 
 // Function to restore session from remember_token cookie
-function restoreAdminSessionFromCookie($conn) {
+function restoreAdminSessionFromCookie($conn)
+{
     if (isset($_COOKIE['admin_remember'])) {
         $token = $_COOKIE['admin_remember'];
 
@@ -67,4 +68,3 @@ if (!$session_admin_id) {
     echo "<script>alert('Session expired. Please login again.'); window.location.href='../index.php';</script>";
     exit;
 }
-?>
