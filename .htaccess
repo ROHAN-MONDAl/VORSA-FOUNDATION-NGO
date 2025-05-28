@@ -1,0 +1,17 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Remove multiple slashes in the URL
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s.*//+.*\sHTTP/
+RewriteRule .* /Freelance_work/VORSA-FOUNDATION-NGO/404.php [L]
+
+# Block directory listing
+Options -Indexes
+
+# Redirect any non-existent files or directories to 404
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ /Freelance_work/VORSA-FOUNDATION-NGO/404.php [L]
+
+# Fallback 404 error page
+ErrorDocument 404 /Freelance_work/VORSA-FOUNDATION-NGO/404.php
