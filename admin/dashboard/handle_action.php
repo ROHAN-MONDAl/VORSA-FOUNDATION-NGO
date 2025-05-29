@@ -58,7 +58,7 @@ function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath,
         [$name, 'Poppins', 'BI', 24], // Bold Italic name
         // ["residing at $address,", 'Poppins', '', 16],
         ["has registered as a Volunteer with", 'Poppins', '', 16],
-        ["with Voice of Rural Social Awareness (VORSA)", 'Poppins', 'B', 16],
+        ["VOICE OF RURAL SUPPORT AND ACADEMIC FOUNDATION", 'Poppins', 'B', 16],
         ["as of $date.", 'Poppins', '', 16],
         ["Volunteer ID: $volunteerId", 'Poppins', 'B', 14]
     ];
@@ -93,12 +93,12 @@ function sendCertificateEmail($to, $name, $filePath)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';           // SMTP server
         $mail->SMTPAuth = true;                    // Enable SMTP authentication
-        $mail->Username = 'codecomettechnology@gmail.com';  // SMTP username
-        $mail->Password = 'uons ghbx ieri vchm';            // SMTP password (use app password)
+        $mail->Username = 'vorsafoundation@gmail.com';  // SMTP username
+        $mail->Password = 'wrtn vszy jdmg zcgy';            // SMTP password (use app password)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Enable TLS encryption
         $mail->Port = 587;
 
-        $mail->setFrom('codecomettechnology@gmail.com', 'VORSA FOUNDATION');
+        $mail->setFrom('vorsafoundation@gmail.com', 'VORSA FOUNDATION');
         $mail->addAddress($to, $name);
         $mail->addAttachment($filePath);          // Attach generated PDF certificate
 

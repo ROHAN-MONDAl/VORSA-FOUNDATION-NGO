@@ -120,7 +120,7 @@
                         <!-- reCAPTCHA widget -->
                         <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                     </div>
- </div>
+                </div>
                 <!-- Submit Button -->
                 <div>
                     <button type="submit" class="full-width-btn">Submit</button>
@@ -147,16 +147,23 @@
                 <div id="popupMsg">
                     <h4><strong>Registration Successful</strong></h4>
                     <p style="margin-top: 20px;">
-                        Thank you for registering with <strong>Vorsha Foundation</strong>.
-                        You will be notified once your application has been reviewed and approved by our team.
+                        Thank you for registering with <strong>Vorsha Foundation</strong>.<br>
+                        You will be notified once your application has been reviewed and approved by our team.<br>
                         A confirmation email has been sent to your registered address.
                     </p>
                     <p>Your registration ID is:</p>
                     <div class="reg-id"><?php echo htmlspecialchars($_GET['id']); ?></div>
-                    <br><br>
-                    <button onclick="document.getElementById('popupMsg').style.display='none'">Close</button>
                 </div>
+
+                <script>
+                    // Redirect to confirmation page after 5 seconds
+                    setTimeout(function() {
+                        window.location.href = "https://vorsafoundation.in/registration-successful";
+                    }, 3000);
+                </script>
             <?php endif; ?>
+
+
 
 
 

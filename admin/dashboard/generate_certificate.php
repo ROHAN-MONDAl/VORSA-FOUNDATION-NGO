@@ -41,7 +41,7 @@ function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath,
         // Uncomment to add address if you want
         // ["residing at $address,", 'Poppins', '', 16],
         ["has registered as a Volunteer with", 'Poppins', '', 16],
-        ["with Voice of Rural Social Awareness (VORSA)", 'Poppins', 'B', 16],
+        ["VOICE OF RURAL SUPPORT AND ACADEMIC FOUNDATION", 'Poppins', 'B', 16],
         ["as of $date.", 'Poppins', '', 16],
         ["Volunteer ID: $volunteerId", 'Poppins', 'B', 14]
     ];
