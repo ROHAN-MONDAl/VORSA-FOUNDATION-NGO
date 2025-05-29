@@ -14,6 +14,6 @@ http_response_code(404);
 <body>
   <h1>404 - Page Not Found</h1>
   <p>Sorry, the page you requested could not be found.</p>
-  <p><a href="/Freelance_work/VORSA-FOUNDATION-NGO/">Go to Homepage</a></p>
+  <p><a href="/Freelance_work/VORSA-FOUNDATION-NGO/vindex.php">Go to Homepage</a></p>
 </body>
 </html>
