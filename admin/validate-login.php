@@ -2,6 +2,11 @@
 session_start();
 include '../server.php'; // Your DB connection
 
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+
 if (!isset($_SESSION['login_attempts'])) $_SESSION['login_attempts'] = 0;
 if (!isset($_SESSION['lock_time'])) $_SESSION['lock_time'] = 0;
 

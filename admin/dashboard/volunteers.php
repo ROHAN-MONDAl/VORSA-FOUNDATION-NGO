@@ -94,97 +94,52 @@ include('authentications/auth_check.php');
                             </div>
 
 
-                            <div class="table-responsive mt-4">
+                            <div class="row mt-4 g-3">
                                 <?php
                                 // Fetch all volunteers
                                 $sql = "SELECT * FROM volunteers ORDER BY id DESC";
                                 $result = mysqli_query($conn, $sql);
+                                $sl = 1;
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
-
-                                <table class="table table-green align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>Slno.</th>
-                                            <th>Registration Id</th>
-                                            <th>Name</th>
-                                            <th>Dob</th>
-                                            <th>Mobile</th>
-                                            <th>Email</th>
-                                            <th>State</th>
-                                            <th>District</th>
-                                            <th>Village</th>
-                                            <th>Block</th>
-                                            <th>Pin</th>
-                                            <th>Blood Group</th>
-                                            <th>Certificate</th>
-                                            <th>Edit</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $sl = 1;
-                                        if (mysqli_num_rows($result) > 0) {
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                        ?>
-                                                <tr>
-                                                    <td class="text-wrap"><?= $sl++ ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['registration_id']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['name']) ?></td>
-                                                    <td><?= htmlspecialchars($row['dob']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['mobile']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['email']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['state']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['district']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['village']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['block']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['pin']) ?></td>
-                                                    <td class="text-wrap"><?= htmlspecialchars($row['blood_group']) ?></td>
-                                                    <td>
-                                                        <div class="action-buttons">
-                                                            <!-- Download PDF button -->
-                                                            <a href="generate_certificate.php?registration_id=<?= urlencode($row['registration_id']) ?>" target="_blank"
-                                                                class="btn btn-primary btn-sm"
-                                                                title="Download Certificate PDF">
-                                                                <i class="ri-download-line"></i> Download PDF
-                                                            </a>
-
-                                                            <!-- WhatsApp Share button -->
-                                                            <!-- <?php
-                                                                    $pdfUrl = urlencode('https://yourdomain.com/certificates/' . $row['registration_id'] . '.pdf');
-                                                                    $whatsappMessage = urlencode("Check out my certificate: $pdfUrl");
-                                                                    $whatsappShareUrl = "https://api.whatsapp.com/send?text=$whatsappMessage";
-                                                                    ?>
-                                                            <a href="<?= $whatsappShareUrl ?>" target="_blank"
-                                                                class="btn btn-success btn-sm"
-                                                                title="Share on WhatsApp">
-                                                                <i class="ri-whatsapp-line"></i> Share on WhatsApp
-                                                            </a> -->
-                                                        </div>
-
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm" onclick="window.location.href='edit_Folder/edit_Volunteers.php?registration_id=<?= $row['registration_id'] ?>'">
-                                                            <i class="ri-file-edit-line"></i> Edit
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-danger btn-sm" onclick="if(confirm('Are you sure you want to delete this volunteer?')) { window.location.href='edit_Folder/delete_volunteer.php?registration_id=<?= urlencode($row['registration_id']) ?>'; }">
-                                                            <i class="ri-delete-bin-line"></i> Delete
-                                                        </button>
-
-
-                                                    </td>
-                                                </tr>
-                                        <?php
-                                            }
-                                        } else {
-                                            echo '<tr><td colspan="15" class="text-center text-muted">No data found</td></tr>';
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div class="card h-100 shadow border-0" style="background: #fff; color: #222;">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <div class="fw-bold fs-6 flex-grow-1"><?= $sl++ ?>. <?= htmlspecialchars($row['name']) ?></div>
+                                                    <span class="badge bg-success bg-opacity-10 text-success ms-2"><?= htmlspecialchars($row['registration_id']) ?></span>
+                                                </div>
+                                                <div class="mb-1 small"><i class="ri-calendar-line me-1"></i> <?= htmlspecialchars(date('Y-m-d', strtotime($row['created_at']))) ?></div>
+                                                <div class="mb-1 small"><i class="ri-user-line me-1"></i> DOB: <?= htmlspecialchars($row['dob']) ?></div>
+                                                <div class="mb-1 small"><i class="ri-phone-line me-1"></i> <?= htmlspecialchars($row['mobile']) ?></div>
+                                                <div class="mb-1 small"><i class="ri-mail-line me-1"></i> <?= htmlspecialchars($row['email']) ?></div>
+                                                <div class="mb-1 small"><i class="ri-map-pin-line me-1"></i> <?= htmlspecialchars($row['village']) ?>, <?= htmlspecialchars($row['block']) ?>, <?= htmlspecialchars($row['district']) ?>, <?= htmlspecialchars($row['state']) ?> - <?= htmlspecialchars($row['pin']) ?></div>
+                                                <div class="mb-2 small"><i class="ri-drop-line me-1"></i> Blood: <?= htmlspecialchars($row['blood_group']) ?></div>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <a href="generate_certificate.php?registration_id=<?= urlencode($row['registration_id']) ?>" target="_blank"
+                                                        class="btn btn-success btn-sm fw-semibold px-2 py-1"
+                                                        title="Download Certificate PDF">
+                                                        <i class="ri-download-line"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-sm fw-semibold px-2 py-1"
+                                                        onclick="window.location.href='edit_Folder/edit_Volunteers.php?registration_id=<?= $row['registration_id'] ?>'">
+                                                        <i class="ri-file-edit-line"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm fw-semibold px-2 py-1"
+                                                        onclick="if(confirm('Are you sure you want to delete this volunteer?')) { window.location.href='edit_Folder/delete_volunteer.php?registration_id=<?= urlencode($row['registration_id']) ?>'; }">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                    }
+                                } else {
+                                    echo '<div class="col-12"><div class="text-center text-muted py-4">No data found</div></div>';
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>

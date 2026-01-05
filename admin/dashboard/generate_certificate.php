@@ -5,8 +5,10 @@ include('authentications/auth_check.php');
 // Require FPDF library
 require('fpdf/fpdf.php');
 
-// The function to generate certificate PDF
-function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath, $alignment = 'center', $topPadding = 70)
+/**
+ * The function to generate certificate PDF
+ */
+function generatePDFCertificate($name, $address, $volunteerId, $date, $issueDate, $savePath, $alignment = 'center', $topPadding = 70)
 {
     $pdf = new FPDF('L', 'mm', 'A4');
     $pdf->AddPage();
@@ -43,7 +45,8 @@ function generatePDFCertificate($name, $address, $volunteerId, $date, $savePath,
         ["has registered as a Volunteer with", 'Poppins', '', 16],
         ["VOICE OF RURAL SUPPORT AND ACADEMIC FOUNDATION", 'Poppins', 'B', 16],
         ["as of $date.", 'Poppins', '', 16],
-        ["Volunteer ID: $volunteerId", 'Poppins', 'B', 14]
+        ["Volunteer ID: $volunteerId", 'Poppins', 'B', 14],
+        ["Issue Date: $issueDate", 'Poppins', '', 14]
     ];
 
     $currentY = $topPadding;
@@ -79,12 +82,16 @@ $volunteer = mysqli_fetch_assoc($result);
 // Prepare save path
 $savePath = __DIR__ . "/certificates/{$volunteer['registration_id']}.pdf";
 
+// Format issue date from created_at column
+$issueDate = date('F j, Y', strtotime($volunteer['created_at']));
+
 // Generate the PDF certificate
 generatePDFCertificate(
     $volunteer['name'],
     $volunteer['village'] . ', ' . $volunteer['district'],  // example address
     $volunteer['registration_id'],
     date('F j, Y'),  // current date or you can use $volunteer['dob']
+    $issueDate,
     $savePath,
     'center',
     70
